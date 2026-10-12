@@ -3,68 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>REDACT // SENSITIVE CONTENT SCANNER (MINI DLP)</title>
+  <title>Redact — Sensitive Content Scanner (DLP)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* ==========================================================================
-       MAXIMALISM DESIGN SYSTEM: HIGH-OCTANE CYBER DEFENSE MATRIX
+       MODERN MINIMALIST DESIGN SYSTEM (Vercel / Linear / Raycast Aesthetic)
        ========================================================================== */
     :root {
-      --bg-base: #08090e;
-      --bg-surface: #0f121d;
-      --bg-card: #151928;
-      --bg-card-hover: #1c2237;
-      --border-bright: #2d3756;
-      --border-active: #00f0ff;
-      --text-main: #f0f4fc;
-      --text-muted: #8b9bb4;
-      --text-dim: #53627c;
+      --bg: #090a0f;
+      --surface: #11131a;
+      --surface-subtle: #161822;
+      --surface-hover: #1c1f2c;
+      --border: #232736;
+      --border-subtle: #191b26;
+      --border-focus: #3b82f6;
       
-      /* Neon Palette */
-      --neon-cyan: #00f0ff;
-      --neon-pink: #ff007a;
-      --neon-yellow: #ffe600;
-      --neon-red: #ff2a2a;
-      --neon-green: #39ff14;
-      --neon-purple: #b026ff;
-      --neon-orange: #ff7700;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
 
-      /* Detector Accent Colors */
-      --det-aadhaar: #ff007a;
-      --det-card: #00f0ff;
-      --det-pan: #ffe600;
-      --det-password: #ff2a2a;
-      --det-email: #39ff14;
-      --det-phone: #b026ff;
-      --det-custom: #ff7700;
+      /* Restrained Accent Palette */
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.12);
+      
+      --danger: #ef4444;
+      --danger-soft: rgba(239, 68, 68, 0.12);
+      --warning: #f59e0b;
+      --warning-soft: rgba(245, 158, 11, 0.12);
+      --success: #10b981;
+      --success-soft: rgba(16, 185, 129, 0.12);
 
-      /* Status Glows */
-      --glow-cyan: 0 0 15px rgba(0, 240, 255, 0.45);
-      --glow-pink: 0 0 18px rgba(255, 0, 122, 0.55);
-      --glow-red: 0 0 20px rgba(255, 42, 42, 0.65);
-      --glow-green: 0 0 16px rgba(57, 255, 20, 0.5);
+      /* Detector highlight tags */
+      --d-aadhaar: #ec4899;
+      --d-card: #06b6d4;
+      --d-pan: #eab308;
+      --d-pwd: #ef4444;
+      --d-email: #10b981;
+      --d-phone: #8b5cf6;
+      --d-custom: #f97316;
 
-      --font-display: 'Syne', sans-serif;
-      --font-tech: 'Chakra Petch', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --font: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --radius: 8px;
+      --radius-sm: 6px;
     }
 
     [data-theme="light"] {
-      --bg-base: #f4f6fc;
-      --bg-surface: #ffffff;
-      --bg-card: #eaedf7;
-      --bg-card-hover: #e0e5f2;
-      --border-bright: #cbd5e1;
-      --border-active: #0052cc;
-      --text-main: #0b1120;
-      --text-muted: #475569;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --surface-hover: #e2e8f0;
+      --border: #e2e8f0;
+      --border-subtle: #edf2f7;
+      --border-focus: #2563eb;
+      --text: #0f172a;
+      --text-muted: #64748b;
       --text-dim: #94a3b8;
-      --glow-cyan: 0 4px 14px rgba(0, 82, 204, 0.25);
-      --glow-pink: 0 4px 14px rgba(225, 29, 72, 0.25);
-      --glow-red: 0 4px 14px rgba(220, 38, 38, 0.3);
-      --glow-green: 0 4px 14px rgba(22, 163, 74, 0.25);
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.08);
+      --danger: #dc2626;
+      --danger-soft: rgba(220, 38, 38, 0.08);
+      --warning: #d97706;
+      --warning-soft: rgba(217, 119, 6, 0.08);
+      --success: #059669;
+      --success-soft: rgba(5, 150, 105, 0.08);
     }
 
     * {
@@ -75,1555 +79,957 @@
     }
 
     body {
-      background-color: var(--bg-base);
-      color: var(--text-main);
-      font-family: var(--font-tech);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      position: relative;
-      overflow-x: hidden;
-      background-image: 
-        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-        radial-gradient(ellipse at 15% 0%, rgba(255, 0, 122, 0.12), transparent 45%),
-        radial-gradient(ellipse at 85% 15%, rgba(0, 240, 255, 0.1), transparent 50%);
-      background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%;
+      line-height: 1.5;
     }
 
-    /* CRT Scanlines Overlay (Optional toggle) */
-    .scanlines-overlay {
-      pointer-events: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-      background-size: 100% 4px;
-      z-index: 9999;
-      opacity: 0.35;
-      display: block;
-    }
-    .scanlines-overlay.disabled {
-      display: none;
-    }
-
-    /* Top Marquee Cyber Ticker */
+    /* TOP ANIMATED TICKER (Left to Right) */
     .top-ticker {
-      background: #000000;
-      border-bottom: 2px solid var(--border-bright);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
       overflow: hidden;
       white-space: nowrap;
       position: sticky;
       top: 0;
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-    }
-    .ticker-row-faculty {
-      background: linear-gradient(90deg, #0f121d 0%, #1a0826 50%, #081a26 100%);
-      color: #ffffff;
-      font-family: var(--font-tech);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(0, 240, 255, 0.3);
-      display: flex;
-      align-items: center;
-    }
-    .ticker-row-system {
-      background: #000000;
-      color: var(--neon-cyan);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      padding: 5px 0;
+      z-index: 50;
+      padding: 8px 0;
       display: flex;
       align-items: center;
     }
     .ticker-track-ltr {
       display: inline-block;
-      white-space: nowrap;
-      animation: marqueeLTR 40s linear infinite;
-    }
-    .ticker-track-rtl {
-      display: inline-block;
-      white-space: nowrap;
-      animation: marqueeRTL 35s linear infinite;
+      animation: marqueeLTR 45s linear infinite;
+      font-size: 12.5px;
+      color: var(--text-muted);
     }
     @keyframes marqueeLTR {
       0% { transform: translateX(-50%); }
       100% { transform: translateX(0%); }
     }
-    @keyframes marqueeRTL {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(-50%); }
-    }
-    .ticker-tag-mentor {
-      background: var(--neon-yellow);
-      color: #000000;
-      padding: 2px 8px;
-      border-radius: 3px;
-      font-weight: 800;
-      margin: 0 8px;
-    }
-    .ticker-tag-member {
-      background: rgba(255, 0, 122, 0.2);
-      border: 1px solid var(--neon-pink);
-      color: #ffffff;
-      padding: 2px 8px;
-      border-radius: 3px;
+    .ticker-chip {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 11px;
       font-family: var(--font-mono);
-      font-size: 11.5px;
-      margin: 0 6px;
+      margin: 0 4px;
     }
 
-    /* Main Container */
-    .app-wrapper {
-      max-width: 1720px;
+    /* CONTAINER */
+    .container {
+      max-width: 1360px;
       width: 100%;
       margin: 0 auto;
-      padding: 16px 24px 40px;
+      padding: 24px 20px 48px;
       display: flex;
       flex-direction: column;
       gap: 20px;
-      flex: 1;
     }
 
-    /* HEADER: Brutalist Maximalist Command Banner */
-    .header-bar {
+    /* TOP HEADER BAR */
+    .navbar {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 20px;
-      background: var(--bg-surface);
-      border: 2px solid var(--border-bright);
-      border-left: 8px solid var(--neon-cyan);
-      padding: 18px 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      position: relative;
+      gap: 16px;
+      padding: 8px 0;
     }
-    .header-bar::after {
-      content: "PROJECT: REDACT // ICS-LAB MP-06";
-      position: absolute;
-      top: -10px;
-      right: 24px;
-      background: var(--neon-cyan);
-      color: #000000;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 800;
-      padding: 2px 10px;
-      letter-spacing: 1px;
-      clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
-    }
-
-    .brand-title-wrap h1 {
-      font-family: var(--font-display);
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      line-height: 1;
-      text-transform: uppercase;
+    .nav-brand {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .brand-title-wrap h1 .glitch-text {
-      background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    .logo-badge {
+      width: 32px;
+      height: 32px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--accent);
     }
-    .brand-title-wrap p {
-      color: var(--text-muted);
-      font-size: 13px;
+    .brand-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text);
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-dim);
       font-family: var(--font-mono);
-      margin-top: 6px;
+    }
+
+    .nav-actions {
       display: flex;
       align-items: center;
       gap: 8px;
     }
-
-    /* PROJECT TITLE SHOWCASE BANNER (Maximalist Lab Exhibit) */
-    .project-title-showcase {
-      background: linear-gradient(135deg, rgba(15, 18, 29, 0.95) 0%, rgba(21, 25, 40, 0.98) 50%, rgba(8, 9, 14, 0.95) 100%);
-      border: 2px solid var(--border-bright);
-      border-top: 3px solid var(--neon-cyan);
-      border-bottom: 3px solid var(--neon-pink);
-      padding: 16px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(0, 240, 255, 0.04);
-    }
-    .project-title-showcase::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 4px; height: 100%;
-      background: linear-gradient(180deg, var(--neon-cyan), var(--neon-yellow), var(--neon-pink));
-    }
-    .showcase-header-tagline {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--neon-cyan);
-    }
-    .showcase-main-title {
-      font-family: var(--font-display);
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      line-height: 1.25;
-      color: #ffffff;
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .title-highlight-quote {
-      background: linear-gradient(90deg, #ffffff 0%, var(--neon-yellow) 50%, var(--neon-cyan) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 25px rgba(255, 230, 0, 0.25);
-    }
-    .title-sub-descriptor {
-      font-family: var(--font-tech);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.8px;
-    }
-    .showcase-pipeline-chips {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      margin-top: 4px;
-    }
-    .pipe-step-chip {
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--border-bright);
-      padding: 4px 12px;
-      border-radius: 3px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-main);
-    }
-    .pipe-arrow {
-      color: var(--neon-yellow);
-      font-weight: 800;
-      font-size: 14px;
-    }
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--neon-green);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--neon-green);
-      animation: blinkDot 1.2s infinite ease-in-out;
-    }
-    @keyframes blinkDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(0.7); }
-    }
-
-    /* Header Controls */
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .hud-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border-bright);
-      color: var(--text-main);
-      padding: 8px 14px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
+    .btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+      gap: 6px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
-    .hud-btn:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--neon-cyan);
-      transform: translate(-1px, -1px);
-      box-shadow: 4px 4px 0px var(--neon-cyan);
+    .btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--text-dim);
+    }
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
       color: #ffffff;
     }
-    .hud-btn:active {
-      transform: translate(1px, 1px);
-      box-shadow: 1px 1px 0px var(--neon-cyan);
+    .btn-primary:hover {
+      opacity: 0.92;
     }
-    .hud-btn.active {
-      border-color: var(--neon-pink);
-      color: var(--neon-pink);
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
     }
 
-    /* ==========================================================================
-       HERO VERDICT STAMP & TELEMETRY HUD BAR
-       ========================================================================== */
-    .telemetry-deck {
-      display: grid;
-      grid-template-columns: 340px 1fr 340px;
-      gap: 20px;
+    /* PROJECT TITLE EXHIBIT */
+    .title-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    @media (max-width: 1200px) {
-      .telemetry-deck {
+    .title-meta-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .title-headline {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      line-height: 1.35;
+    }
+    .title-pipeline-steps {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .pipeline-chip {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+    .step-arrow {
+      color: var(--text-dim);
+      font-size: 12px;
+    }
+
+    /* TELEMETRY DECK */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr 280px;
+      gap: 16px;
+    }
+    @media (max-width: 1024px) {
+      .telemetry-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Verdict Stamp Box */
-    .verdict-stamp-box {
-      background: var(--bg-surface);
-      border: 2px solid var(--border-bright);
-      padding: 20px;
+    .telemetry-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+    }
+
+    /* Verdict badge */
+    .verdict-box {
       align-items: center;
       text-align: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+      gap: 8px;
     }
-    .verdict-stamp-box::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: var(--verdict-color, var(--neon-green));
-      box-shadow: 0 0 10px var(--verdict-color, var(--neon-green));
-    }
-    .stamp-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    
-    /* Physical Rubber Stamp Aesthetic */
-    .stamp-badge {
-      font-family: var(--font-display);
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 10px 24px;
-      border: 5px solid;
-      border-radius: 4px;
-      transform: rotate(-3deg);
+    .verdict-tag {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 6px 20px;
+      border-radius: var(--radius-sm);
       display: inline-block;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 0 25px rgba(0,0,0,0.5);
-      position: relative;
-    }
-    .stamp-badge.CLEAN {
-      color: var(--neon-green);
-      border-color: var(--neon-green);
-      background: rgba(57, 255, 20, 0.08);
-      box-shadow: 0 0 25px rgba(57, 255, 20, 0.3);
-      --verdict-color: var(--neon-green);
-    }
-    .stamp-badge.WARNING {
-      color: var(--neon-yellow);
-      border-color: var(--neon-yellow);
-      background: rgba(255, 230, 0, 0.1);
-      box-shadow: 0 0 30px rgba(255, 230, 0, 0.4);
-      --verdict-color: var(--neon-yellow);
-      animation: hazardPulse 2s infinite alternate;
-    }
-    .stamp-badge.BLOCKED {
-      color: var(--neon-red);
-      border-color: var(--neon-red);
-      background: rgba(255, 42, 42, 0.12);
-      box-shadow: 0 0 35px rgba(255, 42, 42, 0.6);
-      --verdict-color: var(--neon-red);
-      animation: blockStampShake 0.4s ease-in-out;
-    }
-    .stamp-badge.LOG {
-      color: var(--neon-cyan);
-      border-color: var(--neon-cyan);
-      background: rgba(0, 240, 255, 0.08);
-      box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
-      --verdict-color: var(--neon-cyan);
-    }
-    @keyframes blockStampShake {
-      0% { transform: scale(1.3) rotate(-10deg); }
-      50% { transform: scale(0.95) rotate(2deg); }
-      100% { transform: scale(1) rotate(-3deg); }
-    }
-    @keyframes hazardPulse {
-      from { box-shadow: 0 0 20px rgba(255, 230, 0, 0.3); }
-      to { box-shadow: 0 0 40px rgba(255, 230, 0, 0.7); }
-    }
-    .stamp-meta {
-      margin-top: 12px;
-      font-size: 12px;
+      text-transform: uppercase;
       font-family: var(--font-mono);
+    }
+    .verdict-tag.CLEAN {
+      background: var(--success-soft);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .verdict-tag.WARNING {
+      background: var(--warning-soft);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .verdict-tag.BLOCKED {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .verdict-tag.LOG {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    .verdict-caption {
+      font-size: 11.5px;
       color: var(--text-muted);
     }
 
-    /* Center Bento: Telemetry Counters */
-    .counters-bento {
-      background: var(--bg-surface);
-      border: 2px solid var(--border-bright);
-      padding: 16px 20px;
+    /* 4-Stat Grid */
+    .metrics-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      align-items: center;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+      gap: 12px;
     }
-    @media (max-width: 768px) {
-      .counters-bento {
+    @media (max-width: 640px) {
+      .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    .counter-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-bright);
-      padding: 14px 16px;
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      position: relative;
-      overflow: hidden;
-    }
-    .counter-card::after {
-      content: "";
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--accent-bar, var(--neon-cyan));
-    }
-    .counter-card .label {
-      font-size: 10px;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      letter-spacing: 1px;
-    }
-    .counter-card .value {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 800;
-      line-height: 1;
-      color: #ffffff;
-    }
-    .counter-card .subtext {
-      font-size: 10px;
-      font-family: var(--font-mono);
-      color: var(--text-dim);
-    }
-
-    /* Right Bento: Risk Gauge Meter */
-    .risk-gauge-box {
-      background: var(--bg-surface);
-      border: 2px solid var(--border-bright);
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-      position: relative;
-    }
-    .gauge-circle-wrap {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      flex-shrink: 0;
-    }
-    .gauge-circle-wrap svg {
-      transform: rotate(-90deg);
-      width: 100px;
-      height: 100px;
-    }
-    .gauge-bg {
-      fill: none;
-      stroke: var(--bg-card);
-      stroke-width: 9;
-    }
-    .gauge-val {
-      fill: none;
-      stroke: var(--gauge-color, var(--neon-green));
-      stroke-width: 9;
-      stroke-linecap: round;
-      stroke-dasharray: 264;
-      stroke-dashoffset: 264;
-      transition: stroke-dashoffset 0.6s ease, stroke 0.6s ease;
-      filter: drop-shadow(0 0 6px var(--gauge-color, var(--neon-green)));
-    }
-    .gauge-score-display {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 900;
-      color: #ffffff;
-    }
-    .risk-info-wrap {
+    .metric-item {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
-    .risk-info-wrap .risk-title {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .risk-info-wrap .risk-level {
-      font-family: var(--font-display);
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--gauge-color, var(--neon-green));
-      text-transform: uppercase;
-    }
-    .risk-info-wrap .risk-desc {
+    .metric-label {
       font-size: 11px;
+      color: var(--text-dim);
       font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+    .metric-val {
+      font-size: 22px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      color: var(--text);
+    }
+    .metric-sub {
+      font-size: 10.5px;
       color: var(--text-muted);
     }
 
-    /* ==========================================================================
-       MAIN WORKSPACE LAYOUT (2 COLUMNS: DOCUMENT DOCK + RULES MATRIX)
-       ========================================================================== */
-    .workspace-grid {
+    /* Risk Score Gauge */
+    .risk-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .risk-circle-wrap {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+    }
+    .risk-circle-wrap svg {
+      transform: rotate(-90deg);
+      width: 76px;
+      height: 76px;
+    }
+    .risk-bg {
+      fill: none;
+      stroke: var(--surface-subtle);
+      stroke-width: 6;
+    }
+    .risk-bar {
+      fill: none;
+      stroke: var(--success);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 201;
+      stroke-dashoffset: 201;
+      transition: stroke-dashoffset 0.4s ease, stroke 0.4s ease;
+    }
+    .risk-val-text {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* MAIN TWO-COLUMN WORKSPACE */
+    .workspace {
       display: grid;
       grid-template-columns: 1.25fr 1fr;
-      gap: 20px;
+      gap: 16px;
       align-items: start;
     }
-    @media (max-width: 1100px) {
-      .workspace-grid {
+    @media (max-width: 960px) {
+      .workspace {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Left Dock: Document Console */
-    .dock-card {
-      background: var(--bg-surface);
-      border: 2px solid var(--border-bright);
+    /* Card Panels */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       display: flex;
       flex-direction: column;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface-subtle);
+    }
+    .panel-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    /* Card Tabs */
-    .dock-tabs {
-      background: #000000;
-      border-bottom: 2px solid var(--border-bright);
+    /* Tabs */
+    .tabs-nav {
       display: flex;
-      flex-wrap: wrap;
       gap: 2px;
-      padding: 6px 8px 0;
+      border-bottom: 1px solid var(--border);
+      padding: 6px 12px 0;
+      background: var(--surface-subtle);
     }
-    .tab-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border-bright);
+    .tab-item {
+      background: transparent;
+      border: 1px solid transparent;
       border-bottom: none;
       color: var(--text-muted);
-      font-family: var(--font-mono);
       font-size: 12px;
-      font-weight: 700;
-      padding: 10px 18px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      letter-spacing: 0.5px;
-      transition: all 0.15s ease;
-      position: relative;
-    }
-    .tab-btn:hover {
-      background: var(--bg-card-hover);
-      color: #ffffff;
-    }
-    .tab-btn.active {
-      background: var(--bg-surface);
-      color: var(--neon-cyan);
-      border-color: var(--neon-cyan);
-      border-bottom: 2px solid var(--bg-surface);
-      margin-bottom: -2px;
-      box-shadow: 0 -3px 10px rgba(0, 240, 255, 0.2);
-    }
-    .tab-badge {
-      background: var(--neon-pink);
-      color: #ffffff;
-      font-size: 10px;
-      padding: 1px 6px;
-      border-radius: 10px;
-      font-weight: 800;
-    }
-
-    /* Preset Triggers Bar */
-    .preset-bar {
-      background: rgba(0, 0, 0, 0.4);
-      border-bottom: 1px solid var(--border-bright);
-      padding: 10px 16px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
-    .preset-title {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-right: 4px;
-    }
-    .preset-chip {
-      background: var(--bg-card);
-      border: 1px solid var(--border-bright);
-      color: var(--text-main);
-      font-family: var(--font-tech);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .preset-chip:hover {
-      border-color: var(--neon-yellow);
-      background: rgba(255, 230, 0, 0.15);
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
-
-    /* Dock Content Body */
-    .dock-content {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      min-height: 480px;
-    }
-
-    /* Textarea Area */
-    .editor-wrapper {
-      position: relative;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .code-textarea {
-      width: 100%;
-      height: 380px;
-      background: #05060a;
-      border: 2px solid var(--border-bright);
-      color: #ffffff;
-      font-family: var(--font-mono);
-      font-size: 13.5px;
-      line-height: 1.6;
-      padding: 16px;
-      resize: vertical;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-    .code-textarea:focus {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
-    }
-
-    /* File Drop Zone */
-    .dropzone-overlay {
-      border: 2px dashed var(--border-bright);
-      background: rgba(0, 240, 255, 0.03);
-      padding: 14px;
-      text-align: center;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 10px;
-      transition: all 0.2s ease;
-    }
-    .dropzone-overlay:hover, .dropzone-overlay.dragover {
-      border-color: var(--neon-cyan);
-      background: rgba(0, 240, 255, 0.1);
-      color: #ffffff;
-    }
-
-    /* Live Length Limit Counter */
-    .editor-footer-status {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 8px;
-    }
-    .char-limit-bar {
-      width: 160px;
-      height: 6px;
-      background: var(--bg-card);
-      border-radius: 3px;
-      overflow: hidden;
-      margin-left: 8px;
-      display: inline-block;
-      vertical-align: middle;
-    }
-    .char-limit-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--neon-green);
-      transition: width 0.2s ease, background 0.2s ease;
-    }
-    .char-limit-fill.warn { background: var(--neon-yellow); }
-    .char-limit-fill.danger { background: var(--neon-red); }
-
-    /* FINDINGS VIEW (HIGHLIGHTED CODES) */
-    .findings-display {
-      background: #05060a;
-      border: 2px solid var(--border-bright);
-      padding: 16px;
-      font-family: var(--font-mono);
-      font-size: 13.5px;
-      line-height: 1.8;
-      min-height: 380px;
-      max-height: 520px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-    .match-highlight {
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-weight: 700;
-      color: #000000;
-      position: relative;
-      cursor: pointer;
-      transition: transform 0.15s ease, filter 0.15s ease;
-      display: inline-block;
-      box-shadow: 0 0 8px rgba(0,0,0,0.5);
-    }
-    .match-highlight:hover {
-      transform: scale(1.05);
-      filter: brightness(1.2);
-    }
-    .match-highlight::after {
-      content: attr(data-tag);
-      font-size: 9px;
-      vertical-align: super;
-      margin-left: 4px;
-      padding: 1px 3px;
-      background: rgba(0,0,0,0.7);
-      color: #ffffff;
-      border-radius: 2px;
-    }
-
-    /* REDACTED VIEW */
-    .redacted-display {
-      background: #020204;
-      border: 2px solid var(--border-bright);
-      padding: 16px;
-      font-family: var(--font-mono);
-      font-size: 13.5px;
-      line-height: 1.8;
-      min-height: 380px;
-      max-height: 520px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-      color: #d1d5db;
-    }
-    .blackout-bar {
-      background: #000000;
-      color: #000000;
-      padding: 0 2px;
-      border-radius: 1px;
-      user-select: all;
-      box-shadow: 0 0 4px #000000;
-      border-bottom: 2px solid #ff2a2a;
-    }
-    .tagged-token {
-      background: rgba(255, 42, 42, 0.2);
-      border: 1px dashed var(--neon-red);
-      color: var(--neon-red);
-      font-weight: 800;
-      padding: 1px 5px;
-      border-radius: 2px;
-    }
-
-    /* JSON AUDIT VIEW */
-    .json-display {
-      background: #020204;
-      border: 2px solid var(--border-bright);
-      padding: 16px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      line-height: 1.5;
-      min-height: 380px;
-      max-height: 520px;
-      overflow-y: auto;
-      color: var(--neon-green);
-    }
-
-    /* Action Bar at bottom of Document */
-    .dock-actions-footer {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border-bright);
-    }
-
-    /* ==========================================================================
-       RIGHT MATRIX: RULES ENGINE & FORENSIC FINDINGS FEED
-       ========================================================================== */
-    .rules-matrix-card {
-      background: var(--bg-surface);
-      border: 2px solid var(--border-bright);
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
-
-    .matrix-header {
-      background: #000000;
-      border-bottom: 2px solid var(--border-bright);
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .matrix-header h3 {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #ffffff;
-    }
-
-    .rules-list {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    /* Individual Rule Bento */
-    .rule-bento {
-      background: var(--bg-card);
-      border: 1px solid var(--border-bright);
-      padding: 14px 16px;
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
-    }
-    .rule-bento.triggered {
-      border-color: var(--neon-red);
-      box-shadow: 0 0 16px rgba(255, 42, 42, 0.35);
-      background: linear-gradient(90deg, rgba(255, 42, 42, 0.08), var(--bg-card));
-    }
-    .rule-bento.warn-triggered {
-      border-color: var(--neon-yellow);
-      box-shadow: 0 0 16px rgba(255, 230, 0, 0.3);
-      background: linear-gradient(90deg, rgba(255, 230, 0, 0.08), var(--bg-card));
-    }
-    .rule-bento.disabled {
-      opacity: 0.55;
-    }
-
-    .rule-head-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-    .rule-title-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .rule-name {
-      font-family: var(--font-tech);
-      font-size: 15px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-    .rule-trigger-pill {
-      font-size: 10px;
-      font-family: var(--font-mono);
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 2px;
-      text-transform: uppercase;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-bright);
-      color: var(--text-muted);
-    }
-    .rule-bento.triggered .rule-trigger-pill {
-      background: var(--neon-red);
-      color: #ffffff;
-      border-color: var(--neon-red);
-    }
-    .rule-bento.warn-triggered .rule-trigger-pill {
-      background: var(--neon-yellow);
-      color: #000000;
-      border-color: var(--neon-yellow);
-    }
-
-    /* Switch Component */
-    .switch-wrap {
       display: flex;
       align-items: center;
       gap: 6px;
+      transition: color 0.15s, background 0.15s;
     }
-    .switch-input {
-      display: none;
+    .tab-item:hover {
+      color: var(--text);
     }
-    .switch-label {
-      width: 38px;
-      height: 20px;
-      background: #000000;
-      border: 1px solid var(--border-bright);
+    .tab-item.active {
+      color: var(--text);
+      background: var(--surface);
+      border-color: var(--border);
+      border-bottom: 1px solid var(--surface);
+      margin-bottom: -1px;
+    }
+    .tab-count {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 10px;
+      padding: 1px 5px;
       border-radius: 10px;
-      cursor: pointer;
-      position: relative;
-      transition: background 0.2s ease, border-color 0.2s ease;
+      font-family: var(--font-mono);
     }
-    .switch-label::after {
+
+    /* Preset Chips */
+    .presets-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--surface);
+    }
+    .preset-btn {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 11.5px;
+      font-family: var(--font);
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .preset-btn:hover {
+      color: var(--text);
+      border-color: var(--text-dim);
+      background: var(--surface-hover);
+    }
+
+    /* Editors & Viewports */
+    .view-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .text-editor {
+      width: 100%;
+      height: 380px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 14px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .text-editor:focus {
+      border-color: var(--border-focus);
+    }
+
+    .dropzone {
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11.5px;
+      color: var(--text-dim);
+      background: var(--surface-subtle);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .dropzone:hover {
+      border-color: var(--accent);
+      color: var(--text-muted);
+    }
+
+    .view-display {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.7;
+      min-height: 380px;
+      max-height: 500px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* Minimal Highlighting */
+    .highlight-span {
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+      color: #ffffff;
+      cursor: pointer;
+      margin: 0 1px;
+    }
+
+    /* Redaction bars */
+    .censor-bar {
+      background: #111;
+      color: #111;
+      border-radius: 2px;
+      user-select: all;
+    }
+    [data-theme="light"] .censor-bar {
+      background: #000;
+      color: #000;
+    }
+
+    /* Rules Matrix */
+    .rules-list {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .rule-card {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.15s;
+    }
+    .rule-card.triggered {
+      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.04);
+    }
+    .rule-card.warn-triggered {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.04);
+    }
+    .rule-card.disabled {
+      opacity: 0.5;
+    }
+    .rule-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .rule-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .rule-status-badge {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+    .rule-card.triggered .rule-status-badge {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.3);
+      background: var(--danger-soft);
+    }
+    .rule-card.warn-triggered .rule-status-badge {
+      color: var(--warning);
+      border-color: rgba(245, 158, 11, 0.3);
+      background: var(--warning-soft);
+    }
+
+    /* Form Controls */
+    .rule-params {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+    .input-sm {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 2px 6px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      border-radius: 4px;
+      outline: none;
+    }
+    .input-sm:focus {
+      border-color: var(--border-focus);
+    }
+
+    /* Minimal Toggle */
+    .toggle {
+      width: 32px;
+      height: 18px;
+      background: var(--border);
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .toggle.on {
+      background: var(--accent);
+    }
+    .toggle::after {
       content: "";
       position: absolute;
       top: 2px;
       left: 2px;
       width: 14px;
       height: 14px;
-      background: var(--text-muted);
+      background: #ffffff;
       border-radius: 50%;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+      transition: transform 0.15s ease;
     }
-    .switch-input:checked + .switch-label {
-      background: rgba(0, 240, 255, 0.2);
-      border-color: var(--neon-cyan);
-    }
-    .switch-input:checked + .switch-label::after {
-      transform: translateX(18px);
-      background: var(--neon-cyan);
-      box-shadow: 0 0 6px var(--neon-cyan);
+    .toggle.on::after {
+      transform: translateX(14px);
     }
 
-    /* Rule Detectors Tag Bar */
-    .detectors-tag-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .det-badge {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 2px;
-      color: #000000;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* Rule Controls Row (Threshold & Action) */
-    .rule-controls-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      background: rgba(0,0,0,0.3);
-      padding: 8px 12px;
-      border-radius: 3px;
-      font-size: 12px;
-      font-family: var(--font-mono);
-    }
-    .ctrl-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .ctrl-input-num {
-      width: 52px;
-      background: #000000;
-      border: 1px solid var(--border-bright);
-      color: #ffffff;
-      padding: 3px 6px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      text-align: center;
-      border-radius: 2px;
-      outline: none;
-    }
-    .ctrl-input-num:focus {
-      border-color: var(--neon-cyan);
-    }
-    .ctrl-select {
-      background: #000000;
-      border: 1px solid var(--border-bright);
-      color: #ffffff;
-      padding: 3px 8px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      border-radius: 2px;
-      outline: none;
-      cursor: pointer;
-    }
-    .ctrl-select:focus {
-      border-color: var(--neon-cyan);
-    }
-
-    /* Custom Regex Studio Section */
-    .custom-regex-box {
-      margin: 10px 20px 20px;
-      background: var(--bg-card);
-      border: 2px dashed var(--border-bright);
-      padding: 16px;
-      border-radius: 4px;
+    /* Custom Regex Studio */
+    .custom-studio {
+      margin: 0 14px 14px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-    }
-    .custom-regex-box h4 {
-      font-family: var(--font-display);
-      font-size: 14px;
-      color: var(--neon-yellow);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .custom-input-group {
-      display: flex;
       gap: 8px;
+    }
+    .custom-input-wrap {
+      display: flex;
+      gap: 6px;
     }
     .custom-input {
       flex: 1;
-      background: #000000;
-      border: 1px solid var(--border-bright);
-      color: #ffffff;
-      padding: 8px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
       font-family: var(--font-mono);
       font-size: 12px;
+      border-radius: var(--radius-sm);
       outline: none;
     }
     .custom-input:focus {
-      border-color: var(--neon-yellow);
-      box-shadow: 0 0 10px rgba(255, 230, 0, 0.2);
-    }
-    .regex-error-msg {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--neon-red);
-      display: none;
+      border-color: var(--border-focus);
     }
 
-    /* Checksum Rejections Telemetry Drawer */
-    .rejections-drawer {
-      margin: 0 20px 20px;
-      background: #000000;
-      border: 1px solid var(--border-bright);
-      padding: 12px 16px;
-      border-radius: 4px;
-      font-family: var(--font-mono);
-      font-size: 11px;
+    /* Findings Feed */
+    .stream-box {
+      padding: 0 14px 14px;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
-    .rejections-title {
-      color: var(--neon-cyan);
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    /* Findings Feed List */
-    .findings-feed-box {
-      padding: 0 20px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .feed-header {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-    }
-    .finding-item-row {
-      background: var(--bg-card);
-      border-left: 4px solid var(--item-color, var(--neon-cyan));
-      border-right: 1px solid var(--border-bright);
-      border-top: 1px solid var(--border-bright);
-      border-bottom: 1px solid var(--border-bright);
-      padding: 10px 14px;
+    .stream-row {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 8px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
       font-family: var(--font-mono);
-      font-size: 12px;
-      transition: transform 0.15s ease;
-    }
-    .finding-item-row:hover {
-      transform: translateX(4px);
-      background: var(--bg-card-hover);
-    }
-    .finding-val-masked {
-      color: #ffffff;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-    .finding-span-meta {
-      font-size: 10px;
-      color: var(--text-dim);
+      font-size: 11.5px;
     }
 
-    /* Toast Notification */
-    .hud-toast {
+    /* Toast */
+    .toast {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #000000;
-      border: 2px solid var(--neon-cyan);
-      color: #ffffff;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      padding: 12px 20px;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+      bottom: 20px;
+      right: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 12.5px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
       display: none;
-      align-items: center;
-      gap: 10px;
-      z-index: 10000;
-      animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @keyframes toastIn {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Print / Lab Viva Stylesheet */
-    @media print {
-      body {
-        background: #ffffff !important;
-        color: #000000 !important;
-      }
-      .top-ticker, .header-controls, .preset-bar, .dropzone-overlay, .dock-actions-footer, .custom-regex-box, .switch-wrap {
-        display: none !important;
-      }
-      .telemetry-deck, .workspace-grid {
-        display: block !important;
-      }
-      .dock-card, .rules-matrix-card, .verdict-stamp-box {
-        border: 1px solid #000000 !important;
-        box-shadow: none !important;
-        margin-bottom: 20px !important;
-        page-break-inside: avoid;
-      }
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 999;
     }
   </style>
 </head>
 <body>
 
-  <!-- CRT Scanlines Overlay -->
-  <div class="scanlines-overlay" id="scanlinesOverlay"></div>
-
-  <!-- Top Animated Cyber Ticker: Guidance & Team Members (Left-to-Right Animated) -->
+  <!-- Top Animated Ticker (Left to Right) -->
   <div class="top-ticker">
-    <!-- Faculty Guidance & Team Members (Animated Left to Right) -->
-    <div class="ticker-row-faculty">
-      <div class="ticker-track-ltr">
-        <span>⭐ <strong style="color: var(--neon-cyan);">INFORMATION &amp; CYBER SECURITY LAB</strong> // MICRO-PROJECT 06</span>
-        <span class="ticker-tag-mentor">UNDER GUIDANCE OF:</span>
-        <strong style="color: var(--neon-yellow); letter-spacing: 1px;">Asst Prof Mr V Shiva kumar</strong>
-        <span style="color: var(--border-bright); margin: 0 10px;">|</span>
-        <span style="color: var(--neon-pink); font-weight: 800;">MEMBERS:</span>
-        <span class="ticker-tag-member">M. TEJA REDDY (24R01A6636)</span>
-        <span class="ticker-tag-member">M. HRISHIKESH (24R01A6637)</span>
-        <span class="ticker-tag-member">MOHAMMED AMAN (24R01A6638)</span>
-        <span class="ticker-tag-member" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">MOHAMMED JUNADE PASHA (24R01A6639)</span>
-        <span class="ticker-tag-member">MOHAMMED SAIF PATEL (24R01A6640)</span>
-        <span class="ticker-tag-member">M. MAHENDER YADAV (24R01A6641)</span>
-        <span class="ticker-tag-member">M. RITHIKA REDDY (24R01A6642)</span>
-        <span style="color: var(--border-bright); margin: 0 14px;">///</span>
-        <span>⭐ <strong style="color: var(--neon-cyan);">INFORMATION &amp; CYBER SECURITY LAB</strong> // MICRO-PROJECT 06</span>
-        <span class="ticker-tag-mentor">UNDER GUIDANCE OF:</span>
-        <strong style="color: var(--neon-yellow); letter-spacing: 1px;">Asst Prof Mr V Shiva kumar</strong>
-        <span style="color: var(--border-bright); margin: 0 10px;">|</span>
-        <span style="color: var(--neon-pink); font-weight: 800;">MEMBERS:</span>
-        <span class="ticker-tag-member">M. TEJA REDDY (24R01A6636)</span>
-        <span class="ticker-tag-member">M. HRISHIKESH (24R01A6637)</span>
-        <span class="ticker-tag-member">MOHAMMED AMAN (24R01A6638)</span>
-        <span class="ticker-tag-member" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">MOHAMMED JUNADE PASHA (24R01A6639)</span>
-        <span class="ticker-tag-member">MOHAMMED SAIF PATEL (24R01A6640)</span>
-        <span class="ticker-tag-member">M. MAHENDER YADAV (24R01A6641)</span>
-        <span class="ticker-tag-member">M. RITHIKA REDDY (24R01A6642)</span>
-      </div>
+    <div class="ticker-track-ltr">
+      <span><strong>Information &amp; Cyber Security Lab</strong> (MP-06)</span>
+      <span style="margin: 0 8px; color: var(--border);">|</span>
+      <span>Under Guidance of: <strong style="color: var(--text);">Asst Prof Mr V Shiva kumar</strong></span>
+      <span style="margin: 0 8px; color: var(--border);">|</span>
+      <span>Members:</span>
+      <span class="ticker-chip">M. Teja Reddy (24R01A6636)</span>
+      <span class="ticker-chip">M. Hrishikesh (24R01A6637)</span>
+      <span class="ticker-chip">Mohammed Aman (24R01A6638)</span>
+      <span class="ticker-chip">Mohammed Junade Pasha (24R01A6639)</span>
+      <span class="ticker-chip">Mohammed Saif Patel (24R01A6640)</span>
+      <span class="ticker-chip">M. Mahender Yadav (24R01A6641)</span>
+      <span class="ticker-chip">M. Rithika Reddy (24R01A6642)</span>
+      <span style="margin: 0 16px; color: var(--border);">•••</span>
+      <span><strong>Information &amp; Cyber Security Lab</strong> (MP-06)</span>
+      <span style="margin: 0 8px; color: var(--border);">|</span>
+      <span>Under Guidance of: <strong style="color: var(--text);">Asst Prof Mr V Shiva kumar</strong></span>
+      <span style="margin: 0 8px; color: var(--border);">|</span>
+      <span>Members:</span>
+      <span class="ticker-chip">M. Teja Reddy (24R01A6636)</span>
+      <span class="ticker-chip">M. Hrishikesh (24R01A6637)</span>
+      <span class="ticker-chip">Mohammed Aman (24R01A6638)</span>
+      <span class="ticker-chip">Mohammed Junade Pasha (24R01A6639)</span>
+      <span class="ticker-chip">Mohammed Saif Patel (24R01A6640)</span>
+      <span class="ticker-chip">M. Mahender Yadav (24R01A6641)</span>
+      <span class="ticker-chip">M. Rithika Reddy (24R01A6642)</span>
     </div>
   </div>
 
-  <div class="app-wrapper">
+  <div class="container">
 
-    <!-- HEADER COMMAND BAR (CONTROLS & ACTION BUTTONS) -->
-    <header class="header-bar">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <span class="pulse-dot"></span>
-        <span style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan); font-weight: 700; letter-spacing: 1px;">
-          SYSTEM ENCLAVE: ACTIVE // READY
-        </span>
-      </div>
-
-      <div class="header-controls">
-        <div id="backendStatusPill" class="hud-btn" style="border-color: var(--neon-cyan); color: var(--neon-cyan); cursor: default;" title="Backend REST API Status">
-          <span class="pulse-dot" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></span> BACKEND: CHECKING...
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="nav-brand">
+        <div class="logo-badge">R</div>
+        <div>
+          <div class="brand-title">Redact</div>
+          <div class="brand-sub">Sensitive Content Scanner (Mini DLP)</div>
         </div>
-        <button class="hud-btn" id="audioToggleBtn" title="Toggle Synthesized Audio Cues">
-          <span id="audioIcon">🔊</span> AUDIO: <span id="audioStateTxt">ON</span>
+      </div>
+      <div class="nav-actions">
+        <div id="backendStatusPill" class="status-pill">
+          <span class="dot"></span> Client Enclave
+        </div>
+        <button class="btn" id="themeToggleBtn" title="Toggle theme">
+          <span id="themeIcon">☀️</span>
         </button>
-        <button class="hud-btn" id="scanlineToggleBtn" title="Toggle CRT Scanline Effect">
-          <span>📺</span> CRT FX
+        <button class="btn" id="printReportBtn" title="Print report">
+          Print Report
         </button>
-        <button class="hud-btn" id="themeToggleBtn" title="Switch Theme">
-          <span id="themeIcon">☀️</span> THEME
-        </button>
-        <button class="hud-btn" id="printReportBtn" title="Print Security Audit Sheet for Lab Evaluation">
-          <span>🖨️</span> LAB REPORT
-        </button>
+      </div>
+    </nav>
+
+    <!-- PROJECT TITLE EXHIBIT -->
+    <header class="title-card">
+      <div class="title-meta-line">
+        <span>Information &amp; Cyber Security Lab — Micro-Project 06</span>
+        <span>Client-Side Sandbox • Zero Exfiltration</span>
+      </div>
+      <h1 class="title-headline">
+        “Use detectors within a rule to identify sensitive content”
+      </h1>
+      <div class="title-pipeline-steps">
+        <div class="pipeline-chip">01 Detectors (Verhoeff &amp; Luhn)</div>
+        <span class="step-arrow">→</span>
+        <div class="pipeline-chip">02 Priority Matrix</div>
+        <span class="step-arrow">→</span>
+        <div class="pipeline-chip">03 Policy Rules &amp; Thresholds</div>
+        <span class="step-arrow">→</span>
+        <div class="pipeline-chip">04 Action (Log / Warn / Block)</div>
       </div>
     </header>
 
-    <!-- PROJECT TITLE SHOWCASE (LAB TITLE DISPLAY) -->
-    <section class="project-title-showcase">
-      <div class="showcase-header-tagline">
-        <div>
-          <span>🛡️ INFORMATION AND CYBER SECURITY LAB</span>
-          <span style="color: var(--border-bright); margin: 0 8px;">//</span>
-          <span style="color: var(--neon-yellow); font-weight: 800;">MICRO-PROJECT 06</span>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <span style="background: rgba(0, 240, 255, 0.15); border: 1px solid var(--neon-cyan); padding: 2px 8px; border-radius: 2px; font-size: 10px;">DLP POLICY MODEL</span>
-          <span style="background: rgba(57, 255, 20, 0.15); border: 1px solid var(--neon-green); padding: 2px 8px; border-radius: 2px; font-size: 10px; color: var(--neon-green);">VERHOEFF &amp; LUHN</span>
-        </div>
-      </div>
-
-      <div class="showcase-main-title">
-        <span style="color: var(--neon-pink); font-size: 20px;">TITLE:</span>
-        <span class="title-highlight-quote">“Use detectors within a rule to identify sensitive content”</span>
-        <span class="title-sub-descriptor">// Browser-Isolated Mini Data Loss Prevention (DLP) System</span>
-      </div>
-
-      <div class="showcase-pipeline-chips">
-        <div class="pipe-step-chip" style="border-color: var(--neon-pink);">
-          <span style="color: var(--neon-pink);">[01] DETECTORS</span>
-          <span style="color: var(--text-muted); font-size: 10px;">(Aadhaar, Card, PAN, Pwd, Email, Phone, RegEx)</span>
-        </div>
-        <span class="pipe-arrow">➔</span>
-        <div class="pipe-step-chip" style="border-color: var(--neon-cyan);">
-          <span style="color: var(--neon-cyan);">[02] PRIORITY MATRIX</span>
-          <span style="color: var(--text-muted); font-size: 10px;">(Overlap Resolution: D1 &gt; D2 &gt; ... &gt; D7)</span>
-        </div>
-        <span class="pipe-arrow">➔</span>
-        <div class="pipe-step-chip" style="border-color: var(--neon-yellow);">
-          <span style="color: var(--neon-yellow);">[03] POLICY RULES</span>
-          <span style="color: var(--text-muted); font-size: 10px;">(Threshold Counter &ge; Policy Activation)</span>
-        </div>
-        <span class="pipe-arrow">➔</span>
-        <div class="pipe-step-chip" style="border-color: var(--neon-green);">
-          <span style="color: var(--neon-green);">[04] ENFORCEMENT VERDICT</span>
-          <span style="color: var(--text-muted); font-size: 10px;">(BLOCK / WARN / LOG / REDACT)</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- TELEMETRY DECK: VERDICT STAMP + METRICS BENTO + RISK GAUGE -->
-    <section class="telemetry-deck">
+    <!-- TELEMETRY DECK -->
+    <section class="telemetry-grid">
       
-      <!-- Verdict Rubber Stamp -->
-      <div class="verdict-stamp-box" id="verdictBox">
-        <div class="stamp-label">OVERALL POLICY VERDICT</div>
-        <div class="stamp-badge CLEAN" id="verdictBadge">CLEAN</div>
-        <div class="stamp-meta" id="verdictSubtext">No policy thresholds violated. Document unclassified.</div>
+      <!-- Verdict Card -->
+      <div class="telemetry-card verdict-box" id="verdictBox">
+        <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase;">
+          Policy Verdict
+        </div>
+        <div class="verdict-tag CLEAN" id="verdictBadge">CLEAN</div>
+        <div class="verdict-caption" id="verdictSubtext">No policy rules violated</div>
       </div>
 
-      <!-- Counters Bento -->
-      <div class="counters-bento">
-        <div class="counter-card" style="--accent-bar: var(--neon-cyan);">
-          <div class="label">Document Chars</div>
-          <div class="value" id="charCountDisplay">0</div>
-          <div class="subtext">200K Safe Limit</div>
-        </div>
-        <div class="counter-card" style="--accent-bar: var(--neon-pink);">
-          <div class="label">Findings Detected</div>
-          <div class="value" id="findingsCountDisplay">0</div>
-          <div class="subtext">D1 - D7 Overlap-Resolved</div>
-        </div>
-        <div class="counter-card" style="--accent-bar: var(--neon-yellow);">
-          <div class="label">Rules Triggered</div>
-          <div class="value" id="rulesTriggeredDisplay">0/5</div>
-          <div class="subtext">Threshold Exceeded</div>
-        </div>
-        <div class="counter-card" style="--accent-bar: var(--neon-green);">
-          <div class="label">Checksum Rejections</div>
-          <div class="value" id="rejectedCountDisplay">0</div>
-          <div class="subtext">False Positives Suppressed</div>
+      <!-- Stats Grid -->
+      <div class="telemetry-card" style="padding: 12px;">
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <div class="metric-label">Chars</div>
+            <div class="metric-val" id="charCountDisplay">0</div>
+            <div class="metric-sub">Max 200k</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Findings</div>
+            <div class="metric-val" id="findingsCountDisplay">0</div>
+            <div class="metric-sub">Resolved</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Rules</div>
+            <div class="metric-val" id="rulesTriggeredDisplay">0/5</div>
+            <div class="metric-sub">Triggered</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Suppressed</div>
+            <div class="metric-val" id="rejectedCountDisplay">0</div>
+            <div class="metric-sub">Checksums</div>
+          </div>
         </div>
       </div>
 
-      <!-- Risk Meter Gauge -->
-      <div class="risk-gauge-box">
-        <div class="gauge-circle-wrap">
-          <svg viewBox="0 0 100 100">
-            <circle class="gauge-bg" cx="50" cy="50" r="42"></circle>
-            <circle class="gauge-val" id="gaugeValCircle" cx="50" cy="50" r="42"></circle>
+      <!-- Risk Meter -->
+      <div class="telemetry-card risk-box">
+        <div class="risk-circle-wrap">
+          <svg viewBox="0 0 76 76">
+            <circle class="risk-bg" cx="38" cy="38" r="32"></circle>
+            <circle class="risk-bar" id="gaugeValCircle" cx="38" cy="38" r="32"></circle>
           </svg>
-          <div class="gauge-score-display" id="gaugeScoreText">0</div>
+          <div class="risk-val-text" id="gaugeScoreText">0</div>
         </div>
-        <div class="risk-info-wrap">
-          <div class="risk-title">THREAT RISK INDEX</div>
-          <div class="risk-level" id="riskLevelText">SECURE</div>
-          <div class="risk-desc" id="riskFormulaDesc">Weighted formula: Base weight (BLOCK: 30, WARN: 12, LOG: 4) + matches.</div>
+        <div>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase;">
+            Threat Score
+          </div>
+          <div style="font-size: 16px; font-weight: 600; color: var(--text);" id="riskLevelText">
+            Secure
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+            Weighted policy scale
+          </div>
         </div>
       </div>
 
     </section>
 
-    <!-- MAIN WORKSPACE GRID -->
-    <main class="workspace-grid">
+    <!-- WORKSPACE -->
+    <main class="workspace">
 
-      <!-- LEFT: DOCUMENT CONSOLE (4 TABS) -->
-      <div class="dock-card">
+      <!-- LEFT: DOCUMENT CONSOLE -->
+      <div class="panel">
         
         <!-- Tabs Header -->
-        <div class="dock-tabs">
-          <button class="tab-btn active" data-tab="tab-editor">
-            <span>01 // INPUT EDITOR</span>
+        <div class="tabs-nav">
+          <button class="tab-item active" data-tab="tab-editor">
+            Input Editor
           </button>
-          <button class="tab-btn" data-tab="tab-findings">
-            <span>02 // FINDINGS INSPECTOR</span>
-            <span class="tab-badge" id="tabBadgeFindings">0</span>
+          <button class="tab-item" data-tab="tab-findings">
+            Findings <span class="tab-count" id="tabBadgeFindings">0</span>
           </button>
-          <button class="tab-btn" data-tab="tab-redacted">
-            <span>03 // CLASSIFIED REDACTION</span>
+          <button class="tab-item" data-tab="tab-redacted">
+            Redacted View
           </button>
-          <button class="tab-btn" data-tab="tab-audit">
-            <span>04 // JSON TELEMETRY</span>
+          <button class="tab-item" data-tab="tab-audit">
+            JSON Telemetry
           </button>
         </div>
 
-        <!-- Preset Triggers Bar (Quick Demos for Faculty Evaluation) -->
-        <div class="preset-bar">
-          <span class="preset-title">Faculty Demo Presets:</span>
-          <button class="preset-chip" onclick="loadSamplePreset('test1')">🧪 Test 1: Aadhaar Verhoeff</button>
-          <button class="preset-chip" onclick="loadSamplePreset('test2')">💳 Test 2: Card Luhn</button>
-          <button class="preset-chip" onclick="loadSamplePreset('test3')">🔑 Test 3: PAN &amp; Passwords</button>
-          <button class="preset-chip" onclick="loadSamplePreset('test4')">👥 Test 4: Bulk Directory</button>
-          <button class="preset-chip" onclick="loadSamplePreset('test5')">🏷️ Test 5: Custom Badges</button>
-          <button class="preset-chip" onclick="loadSamplePreset('test6')">🛡️ Test 6: Clean Document</button>
-          <button class="preset-chip" style="margin-left: auto; color: var(--neon-red);" onclick="clearEditor()">✕ CLEAR</button>
+        <!-- Preset Test Files -->
+        <div class="presets-row">
+          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-dim); margin-right: 4px;">Samples:</span>
+          <button class="preset-btn" onclick="loadSamplePreset('test1')">1. Aadhaar</button>
+          <button class="preset-btn" onclick="loadSamplePreset('test2')">2. Cards</button>
+          <button class="preset-btn" onclick="loadSamplePreset('test3')">3. Credentials</button>
+          <button class="preset-btn" onclick="loadSamplePreset('test4')">4. Bulk Data</button>
+          <button class="preset-btn" onclick="loadSamplePreset('test5')">5. Custom Regex</button>
+          <button class="preset-btn" onclick="loadSamplePreset('test6')">6. Clean</button>
+          <button class="preset-btn" style="margin-left: auto; color: var(--danger);" onclick="clearEditor()">Clear</button>
         </div>
 
-        <!-- Tab 1: Input Editor -->
-        <div class="dock-content" id="tab-editor">
-          <div class="editor-wrapper">
-            <textarea 
-              class="code-textarea" 
-              id="rawInputText" 
-              placeholder="Paste raw text, logs, CSV data, chat exports or drop a file here to initiate real-time DLP scanning..."
-              spellcheck="false"
-            ></textarea>
+        <!-- Tab 1: Editor -->
+        <div class="view-content" id="tab-editor">
+          <textarea 
+            class="text-editor" 
+            id="rawInputText" 
+            placeholder="Paste text, log entries, CSV exports or drop a file to start scanning..."
+            spellcheck="false"
+          ></textarea>
 
-            <div class="dropzone-overlay" id="dropzoneOverlay">
-              <span>📂</span> Drop text file here (.txt, .csv, .log, .json, .md) or click to browse
-              <input type="file" id="fileInput" accept=".txt,.csv,.log,.json,.md" style="display: none;">
-            </div>
-
-            <div class="editor-footer-status">
-              <div>
-                <span>Character Count: </span>
-                <strong id="charCountSpan" style="color: #ffffff;">0</strong> / 200,000
-                <div class="char-limit-bar">
-                  <div class="char-limit-fill" id="charLimitFill"></div>
-                </div>
-              </div>
-              <div id="scanLatencySpan">Latency: ~0.4ms (Instant)</div>
-            </div>
+          <div class="dropzone" id="dropzoneOverlay">
+            Drag &amp; drop a text file here (.txt, .csv, .log, .json, .md) or click to browse
+            <input type="file" id="fileInput" accept=".txt,.csv,.log,.json,.md" style="display: none;">
           </div>
         </div>
 
-        <!-- Tab 2: Findings Inspector -->
-        <div class="dock-content" id="tab-findings" style="display: none;">
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">
-            Visual syntax highlight map with overlap elimination (High priority wins):
-          </div>
-          <div class="findings-display" id="findingsHighlightBox">No text loaded yet.</div>
+        <!-- Tab 2: Findings -->
+        <div class="view-content" id="tab-findings" style="display: none;">
+          <div class="view-display" id="findingsHighlightBox">No text loaded yet.</div>
         </div>
 
         <!-- Tab 3: Redacted View -->
-        <div class="dock-content" id="tab-redacted" style="display: none;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
-              Sanitized document copy with sensitive tokens expunged:
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="hud-btn" id="toggleRedactModeBtn" style="padding: 4px 10px; font-size: 11px;">
-                MODE: <span id="redactModeTxt">BLACKOUT BARS (███)</span>
-              </button>
-            </div>
+        <div class="view-content" id="tab-redacted" style="display: none;">
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 4px;">
+            <button class="btn" id="toggleRedactModeBtn" style="font-size: 11.5px; padding: 4px 8px;">
+              Mode: <span id="redactModeTxt">Blackout (███)</span>
+            </button>
           </div>
-          <div class="redacted-display" id="redactedTextBox">No text to redact.</div>
+          <div class="view-display" id="redactedTextBox">No text to redact.</div>
         </div>
 
-        <!-- Tab 4: JSON Audit Telemetry -->
-        <div class="dock-content" id="tab-audit" style="display: none;">
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">
-            Full structured machine-readable security telemetry export:
-          </div>
-          <pre class="json-display" id="jsonAuditBox">{}</pre>
+        <!-- Tab 4: JSON Audit -->
+        <div class="view-content" id="tab-audit" style="display: none;">
+          <pre class="view-display" id="jsonAuditBox" style="color: var(--accent);">{}</pre>
         </div>
 
-        <!-- Dock Actions Footer -->
-        <div class="dock-actions-footer">
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <button class="hud-btn" id="copyRedactedBtn">
-              <span>📋</span> COPY REDACTED TEXT
-            </button>
-            <button class="hud-btn" id="downloadRedactedBtn">
-              <span>💾</span> DOWNLOAD REDACTED (.TXT)
-            </button>
-            <button class="hud-btn" id="copyJsonBtn">
-              <span>⚡</span> EXPORT JSON REPORT
-            </button>
+        <!-- Action Bar Footer -->
+        <div style="padding: 12px 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface-subtle);">
+          <div style="display: flex; gap: 8px;">
+            <button class="btn" id="copyRedactedBtn">Copy Redacted</button>
+            <button class="btn" id="downloadRedactedBtn">Download</button>
+            <button class="btn" id="copyJsonBtn">Copy JSON</button>
           </div>
-          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-            Engine: Verhoeff 10x10 + Luhn Mod10
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-dim);" id="scanLatencySpan">
+            Latency: 0ms
           </div>
         </div>
 
       </div>
 
-      <!-- RIGHT: POLICY RULE MATRIX & DETECTOR CONTROLS -->
-      <div class="rules-matrix-card">
-
-        <div class="matrix-header">
-          <h3>
-            <span>⚙️</span>
-            <span>DLP POLICY ENGINE</span>
-          </h3>
-          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan);">
-            LIVE THRESHOLD TUNING
-          </span>
+      <!-- RIGHT: POLICY RULES MATRIX -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Policy Rules Engine</span>
+          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-dim);">Live Tuning</span>
         </div>
 
-        <!-- Policy Rules List -->
+        <!-- Rules List -->
         <div class="rules-list" id="rulesListContainer">
-          <!-- Dynamically populated via JS -->
+          <!-- Populated by JavaScript -->
         </div>
 
-        <!-- Custom Regex Studio (D7 / R5) -->
-        <div class="custom-regex-box">
-          <h4>
-            <span>🔬</span>
-            <span>CUSTOM DETECTOR STUDIO (D7)</span>
-          </h4>
-          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">
-            Define arbitrary regex patterns (e.g., Staff Badges <code>EMP-\d{5}</code>, API Keys, Org IDs).
+        <!-- Custom Regex -->
+        <div class="custom-studio">
+          <div style="font-size: 12px; font-weight: 600; color: var(--text);">Custom Detector Pattern</div>
+          <div class="custom-input-wrap">
+            <input type="text" class="custom-input" id="customRegexInput" value="EMP-\d{5}" placeholder="e.g. EMP-\d{5}">
+            <button class="btn" id="applyCustomRegexBtn">Apply</button>
           </div>
-          <div class="custom-input-group">
-            <input 
-              type="text" 
-              class="custom-input" 
-              id="customRegexInput" 
-              placeholder="Enter Custom RegEx pattern (e.g. EMP-\d{5})"
-              value="EMP-\d{5}"
-            >
-            <button class="hud-btn" id="applyCustomRegexBtn" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">
-              APPLY REGEX
-            </button>
-          </div>
-          <div class="regex-error-msg" id="regexErrorMsg">Invalid Regular Expression syntax.</div>
+          <div style="font-size: 11px; color: var(--danger); display: none;" id="regexErrorMsg">Invalid Regex</div>
         </div>
 
-        <!-- Checksum Rejection Radar -->
-        <div class="rejections-drawer">
-          <div class="rejections-title">
-            <span>🛡️ CHECKSUM INTEGRITY RADAR</span>
-            <span id="rejectionsTotalBadge" style="color: var(--neon-yellow);">0 REJECTED</span>
+        <!-- Stream Feed -->
+        <div class="stream-box">
+          <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-mono); color: var(--text-dim); margin-bottom: 4px;">
+            <span>Detected Entities</span>
+            <span id="feedCountSpan">0 items</span>
           </div>
-          <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
-            <span>Aadhaar Verhoeff Rejections:</span>
-            <strong id="rejAadhaarCount" style="color: #ffffff;">0</strong>
-          </div>
-          <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
-            <span>Credit Card Luhn Rejections:</span>
-            <strong id="rejCardCount" style="color: #ffffff;">0</strong>
-          </div>
-          <div style="color: var(--text-dim); font-size: 10px; margin-top: 4px;">
-            Prevents false alarms on random 12-digit or 16-digit serial numbers.
-          </div>
-        </div>
-
-        <!-- Forensic Findings Feed -->
-        <div class="findings-feed-box">
-          <div class="feed-header">
-            <span>Active Findings Stream</span>
-            <span id="feedCountSpan">0 Items</span>
-          </div>
-          <div id="findingsStreamContainer" style="display: flex; flex-direction: column; gap: 8px;">
-            <div style="color: var(--text-dim); font-family: var(--font-mono); font-size: 11px; padding: 10px; text-align: center;">
-              No sensitive findings currently identified.
-            </div>
-          </div>
+          <div id="findingsStreamContainer" style="display: flex; flex-direction: column; gap: 6px;"></div>
         </div>
 
       </div>
@@ -1632,18 +1038,13 @@
 
   </div>
 
-  <!-- HUD Toast Notification -->
-  <div class="hud-toast" id="hudToast">
-    <span id="toastIcon">✓</span>
-    <span id="toastMsg">Action executed successfully</span>
-  </div>
+  <!-- Toast -->
+  <div class="toast" id="hudToast">Notification</div>
 
-  <!-- ==========================================================================
-       JAVASCRIPT SCANNER LOGIC, ALGORITHMS & UI INTERACTIVITY
-       ========================================================================== -->
+  <!-- JAVASCRIPT ENGINE & LOGIC -->
   <script>
     /* ==========================================================================
-       1. VERHOEFF & LUHN VALIDATION ALGORITHMS
+       CHECKSUM VALIDATORS
        ========================================================================== */
     const VERHOEFF_D = [
       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -1702,187 +1103,37 @@
       return clean.slice(0, 2) + '*'.repeat(clean.length - 4) + clean.slice(-2);
     }
 
-    /* ==========================================================================
-       2. DETECTORS & RULES CONFIGURATION
-       ========================================================================== */
+    /* DETECTORS CONFIG */
     const DETECTORS_CONFIG = [
-      {
-        id: "D1",
-        name: "Aadhaar",
-        tag: "AADHAAR",
-        regex: /\b[2-9]\d{3}[-\s]?\d{4}[-\s]?\d{4}\b/g,
-        validator: "verhoeff",
-        priority: 1,
-        color: "#FF007A"
-      },
-      {
-        id: "D2",
-        name: "Credit card",
-        tag: "CARD",
-        regex: /\b(?:\d[ -]?){13,19}\b/g,
-        validator: "luhn",
-        priority: 2,
-        color: "#00F0FF"
-      },
-      {
-        id: "D3",
-        name: "PAN",
-        tag: "PAN",
-        regex: /\b[A-Z]{5}[0-9]{4}[A-Z]\b/g,
-        validator: null,
-        priority: 3,
-        color: "#FFE600"
-      },
-      {
-        id: "D4",
-        name: "Password",
-        tag: "PASSWORD",
-        regex: /\b(?:password|passwd|pwd)\s*[:=]\s*([^\s,;]+)/gi,
-        validator: null,
-        priority: 4,
-        color: "#FF2A2A"
-      },
-      {
-        id: "D5",
-        name: "Email",
-        tag: "EMAIL",
-        regex: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g,
-        validator: null,
-        priority: 5,
-        color: "#39FF14"
-      },
-      {
-        id: "D6",
-        name: "Indian phone",
-        tag: "PHONE",
-        regex: /\b(?:\+91[-\s]?|0)?[6-9]\d{9}\b/g,
-        validator: null,
-        priority: 6,
-        color: "#B026FF"
-      },
-      {
-        id: "D7",
-        name: "Custom detector",
-        tag: "CUSTOM",
-        regex: /EMP-\d{5}/g,
-        validator: null,
-        priority: 7,
-        color: "#FF7700"
-      }
+      { id: "D1", name: "Aadhaar", tag: "AADHAAR", regex: /\b[2-9]\d{3}[-\s]?\d{4}[-\s]?\d{4}\b/g, validator: "verhoeff", priority: 1, color: "var(--d-aadhaar)" },
+      { id: "D2", name: "Credit card", tag: "CARD", regex: /\b(?:\d[ -]?){13,19}\b/g, validator: "luhn", priority: 2, color: "var(--d-card)" },
+      { id: "D3", name: "PAN", tag: "PAN", regex: /\b[A-Z]{5}[0-9]{4}[A-Z]\b/g, validator: null, priority: 3, color: "var(--d-pan)" },
+      { id: "D4", name: "Password", tag: "PASSWORD", regex: /\b(?:password|passwd|pwd)\s*[:=]\s*([^\s,;]+)/gi, validator: null, priority: 4, color: "var(--d-pwd)" },
+      { id: "D5", name: "Email", tag: "EMAIL", regex: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g, validator: null, priority: 5, color: "var(--d-email)" },
+      { id: "D6", name: "Indian phone", tag: "PHONE", regex: /\b(?:\+91[-\s]?|0)?[6-9]\d{9}\b/g, validator: null, priority: 6, color: "var(--d-phone)" },
+      { id: "D7", name: "Custom detector", tag: "CUSTOM", regex: /EMP-\d{5}/g, validator: null, priority: 7, color: "var(--d-custom)" }
     ];
 
     let RULES = [
-      {
-        id: "R1",
-        name: "Government ID leak",
-        detectorIds: ["D1", "D3"],
-        threshold: 1,
-        action: "BLOCK",
-        enabled: true
-      },
-      {
-        id: "R2",
-        name: "Payment data",
-        detectorIds: ["D2"],
-        threshold: 1,
-        action: "BLOCK",
-        enabled: true
-      },
-      {
-        id: "R3",
-        name: "Credentials",
-        detectorIds: ["D4"],
-        threshold: 1,
-        action: "BLOCK",
-        enabled: true
-      },
-      {
-        id: "R4",
-        name: "Bulk personal data",
-        detectorIds: ["D5", "D6"],
-        threshold: 5,
-        action: "WARN",
-        enabled: true
-      },
-      {
-        id: "R5",
-        name: "Custom keyword rule",
-        detectorIds: ["D7"],
-        threshold: 1,
-        action: "WARN",
-        enabled: true
-      }
+      { id: "R1", name: "Government ID leak", detectorIds: ["D1", "D3"], threshold: 1, action: "BLOCK", enabled: true },
+      { id: "R2", name: "Payment data", detectorIds: ["D2"], threshold: 1, action: "BLOCK", enabled: true },
+      { id: "R3", name: "Credentials", detectorIds: ["D4"], threshold: 1, action: "BLOCK", enabled: true },
+      { id: "R4", name: "Bulk personal data", detectorIds: ["D5", "D6"], threshold: 5, action: "WARN", enabled: true },
+      { id: "R5", name: "Custom keyword rule", detectorIds: ["D7"], threshold: 1, action: "WARN", enabled: true }
     ];
 
-    /* ==========================================================================
-       3. AUDIO SYNTHESIZER (WEB AUDIO API)
-       ========================================================================== */
-    let audioContext = null;
-    let audioEnabled = true;
-
-    function initAudio() {
-      if (!audioContext) {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (AudioCtx) audioContext = new AudioCtx();
-      }
-    }
-
-    function playTone(freq, type, duration, delay = 0) {
-      if (!audioEnabled) return;
-      initAudio();
-      if (!audioContext) return;
-      
-      setTimeout(() => {
-        try {
-          const osc = audioContext.createOscillator();
-          const gain = audioContext.createGain();
-          osc.type = type;
-          osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-          gain.gain.setValueAtTime(0.08, audioContext.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
-          osc.connect(gain);
-          gain.connect(audioContext.destination);
-          osc.start();
-          osc.stop(audioContext.currentTime + duration);
-        } catch (e) {}
-      }, delay);
-    }
-
-    function playSoundAlert(verdict) {
-      if (!audioEnabled) return;
-      if (verdict === 'BLOCK') {
-        playTone(180, 'sawtooth', 0.2, 0);
-        playTone(140, 'sawtooth', 0.35, 180);
-      } else if (verdict === 'WARN') {
-        playTone(440, 'sine', 0.15, 0);
-        playTone(330, 'sine', 0.2, 120);
-      } else if (verdict === 'CLEAN') {
-        playTone(523.25, 'triangle', 0.12, 0);
-        playTone(659.25, 'triangle', 0.18, 90);
-      } else {
-        playTone(400, 'sine', 0.08, 0);
-      }
-    }
-
-    /* ==========================================================================
-       4. SCANNER CORE ENGINE
-       ========================================================================== */
     let currentScanResult = null;
-    let redactMode = 'blackout'; // 'blackout' or 'tagged'
+    let redactMode = 'blackout';
 
     function executeScan(text) {
       const startTime = performance.now();
       const rawCandidates = [];
-      const rejected = {
-        verhoeff: 0,
-        luhn: 0,
-        details: []
-      };
+      const rejected = { verhoeff: 0, luhn: 0 };
 
       // 1. Run all detectors
       for (const det of DETECTORS_CONFIG) {
         if (!det.regex) continue;
-        det.regex.lastIndex = 0; // reset RegExp index
+        det.regex.lastIndex = 0;
         
         let match;
         while ((match = det.regex.exec(text)) !== null) {
@@ -1898,12 +1149,6 @@
             } else {
               isValid = false;
               rejected.verhoeff++;
-              rejected.details.push({
-                detector: "Aadhaar",
-                reason: "Failed Verhoeff checksum",
-                value: maskValue(matchedText),
-                span: [startIdx, endIdx]
-              });
             }
           } else if (det.validator === 'luhn') {
             const digits = matchedText.replace(/\D/g, '');
@@ -1912,12 +1157,6 @@
             } else {
               isValid = false;
               rejected.luhn++;
-              rejected.details.push({
-                detector: "Credit card",
-                reason: "Failed Luhn checksum",
-                value: maskValue(matchedText),
-                span: [startIdx, endIdx]
-              });
             }
           }
 
@@ -1937,7 +1176,7 @@
         }
       }
 
-      // 2. Overlap Resolution: Earlier detector in priority wins (PRD 6.1)
+      // 2. Overlap Resolution
       rawCandidates.sort((a, b) => {
         if (a.start !== b.start) return a.start - b.start;
         if (a.priority !== b.priority) return a.priority - b.priority;
@@ -1953,11 +1192,8 @@
             break;
           }
         }
-        if (!overlap) {
-          resolvedFindings.push(candidate);
-        }
+        if (!overlap) resolvedFindings.push(candidate);
       }
-
       resolvedFindings.sort((a, b) => a.start - b.start);
 
       // 3. Rule Evaluation
@@ -1977,27 +1213,15 @@
 
       for (const rule of RULES) {
         if (!rule.enabled) {
-          evaluatedRules.push({
-            ...rule,
-            matchCount: 0,
-            triggered: false,
-            status: "DISABLED"
-          });
+          evaluatedRules.push({ ...rule, matchCount: 0, triggered: false, status: "DISABLED" });
           continue;
         }
 
         let matchCount = 0;
-        for (const dId of rule.detectorIds) {
-          matchCount += (detectorCounts[dId] || 0);
-        }
+        for (const dId of rule.detectorIds) matchCount += (detectorCounts[dId] || 0);
 
         const isTriggered = matchCount >= rule.threshold && matchCount > 0;
-        const ruleInfo = {
-          ...rule,
-          matchCount,
-          triggered: isTriggered,
-          status: isTriggered ? "TRIGGERED" : "PASS"
-        };
+        const ruleInfo = { ...rule, matchCount, triggered: isTriggered, status: isTriggered ? "TRIGGERED" : "PASS" };
         evaluatedRules.push(ruleInfo);
 
         if (isTriggered) {
@@ -2005,7 +1229,6 @@
           const act = rule.action.toUpperCase();
           const baseW = actionWeights[act] || 0;
           totalRisk += (baseW + (Math.min(matchCount, 5) * 3));
-
           const rank = actionRanks[act] || 0;
           if (rank > maxRank) maxRank = rank;
         }
@@ -2013,19 +1236,15 @@
 
       totalRisk = Math.min(100, totalRisk);
       const verdict = rankToVerdict[maxRank];
-      const endTime = performance.now();
-      const latencyMs = (endTime - startTime).toFixed(2);
+      const latencyMs = (performance.now() - startTime).toFixed(1);
 
-      // 4. Generate Redactions
-      let blackoutText = text;
+      // 4. Redactions
       let taggedParts = [];
       let lastIdx = 0;
       const blackoutArr = text.split('');
 
       for (const f of resolvedFindings) {
-        for (let i = f.start; i < f.end; i++) {
-          blackoutArr[i] = '█';
-        }
+        for (let i = f.start; i < f.end; i++) blackoutArr[i] = '█';
         taggedParts.push(text.substring(lastIdx, f.start));
         taggedParts.push(`[${f.tag} REDACTED]`);
         lastIdx = f.end;
@@ -2042,8 +1261,7 @@
         rejections: {
           total: rejected.verhoeff + rejected.luhn,
           verhoeff: rejected.verhoeff,
-          luhn: rejected.luhn,
-          details: rejected.details
+          luhn: rejected.luhn
         },
         redactedBlackout: blackoutArr.join(''),
         redactedTagged: taggedParts.join(''),
@@ -2054,597 +1272,308 @@
       return currentScanResult;
     }
 
-    /* ==========================================================================
-       5. UI RENDERERS
-       ========================================================================== */
+    /* UI RENDER */
     function renderUI(result, text) {
-      // 1. Verdict Stamp
-      const verdictBadge = document.getElementById('verdictBadge');
-      const verdictBox = document.getElementById('verdictBox');
-      const verdictSubtext = document.getElementById('verdictSubtext');
+      // 1. Verdict
+      const badge = document.getElementById('verdictBadge');
+      badge.className = `verdict-tag ${result.verdict}`;
+      badge.textContent = result.verdict;
 
-      verdictBadge.className = `stamp-badge ${result.verdict}`;
-      verdictBadge.textContent = result.verdict;
+      const sub = document.getElementById('verdictSubtext');
+      if (result.verdict === 'BLOCKED') sub.textContent = `${result.triggeredRules.length} policy rules triggered high-impact block`;
+      else if (result.verdict === 'WARNING') sub.textContent = 'Potential sensitive exposure flagged';
+      else if (result.verdict === 'LOG') sub.textContent = 'Sensitive data logged for audit';
+      else sub.textContent = 'No policy rules violated';
 
-      if (result.verdict === 'BLOCKED') {
-        verdictSubtext.textContent = `CRITICAL: ${result.triggeredRules.length} policy rules triggered high-impact block. Data transmission halted.`;
-        verdictBox.style.setProperty('--verdict-color', 'var(--neon-red)');
-      } else if (result.verdict === 'WARNING') {
-        verdictSubtext.textContent = `CAUTION: Potential sensitive exposure flagged. Review required before release.`;
-        verdictBox.style.setProperty('--verdict-color', 'var(--neon-yellow)');
-      } else if (result.verdict === 'LOG') {
-        verdictSubtext.textContent = `LOGGED: Sensitive identifiers recorded for security audit.`;
-        verdictBox.style.setProperty('--verdict-color', 'var(--neon-cyan)');
-      } else {
-        verdictSubtext.textContent = `No policy thresholds violated. Document unclassified.`;
-        verdictBox.style.setProperty('--verdict-color', 'var(--neon-green)');
-      }
-
-      // 2. Bento Counters
+      // 2. Metrics
       document.getElementById('charCountDisplay').textContent = result.textLength.toLocaleString();
-      document.getElementById('charCountSpan').textContent = result.textLength.toLocaleString();
       document.getElementById('findingsCountDisplay').textContent = result.findingsCount;
       document.getElementById('tabBadgeFindings').textContent = result.findingsCount;
       document.getElementById('rulesTriggeredDisplay').textContent = `${result.triggeredRules.length}/${RULES.filter(r => r.enabled).length}`;
       document.getElementById('rejectedCountDisplay').textContent = result.rejections.total;
-      document.getElementById('scanLatencySpan').textContent = `Scan Latency: ~${result.latencyMs}ms`;
+      document.getElementById('scanLatencySpan').textContent = `Latency: ${result.latencyMs}ms`;
 
-      // Char length progress bar (up to 200,000)
-      const charPercent = Math.min(100, (result.textLength / 200000) * 100);
-      const fillBar = document.getElementById('charLimitFill');
-      fillBar.style.width = `${charPercent}%`;
-      fillBar.className = 'char-limit-fill' + (charPercent > 80 ? ' danger' : charPercent > 50 ? ' warn' : '');
+      // 3. Risk Gauge (radius 32, perimeter 201)
+      const circle = document.getElementById('gaugeValCircle');
+      const scoreTxt = document.getElementById('gaugeScoreText');
+      const lvlTxt = document.getElementById('riskLevelText');
 
-      // 3. Risk Gauge Meter
-      const gaugeCircle = document.getElementById('gaugeValCircle');
-      const scoreText = document.getElementById('gaugeScoreText');
-      const riskLevel = document.getElementById('riskLevelText');
+      scoreTxt.textContent = result.riskScore;
+      const offset = 201 - (201 * (result.riskScore / 100));
+      circle.style.strokeDashoffset = offset;
 
-      scoreText.textContent = result.riskScore;
-      // 264 is perimeter approx (2 * PI * 42 = 263.89)
-      const dashOffset = 264 - (264 * (result.riskScore / 100));
-      gaugeCircle.style.strokeDashoffset = dashOffset;
+      let color = 'var(--success)';
+      let label = 'Secure';
+      if (result.riskScore >= 60) { color = 'var(--danger)'; label = 'Critical'; }
+      else if (result.riskScore >= 25) { color = 'var(--warning)'; label = 'Elevated'; }
+      else if (result.riskScore > 0) { color = 'var(--accent)'; label = 'Low'; }
 
-      let gaugeColor = 'var(--neon-green)';
-      let levelLabel = 'SECURE';
-      if (result.riskScore >= 60) {
-        gaugeColor = 'var(--neon-red)';
-        levelLabel = 'CRITICAL';
-      } else if (result.riskScore >= 25) {
-        gaugeColor = 'var(--neon-yellow)';
-        levelLabel = 'ELEVATED';
-      } else if (result.riskScore > 0) {
-        gaugeColor = 'var(--neon-cyan)';
-        levelLabel = 'LOW';
-      }
-      gaugeCircle.style.setProperty('--gauge-color', gaugeColor);
-      riskLevel.style.setProperty('--gauge-color', gaugeColor);
-      riskLevel.textContent = levelLabel;
+      circle.style.stroke = color;
+      lvlTxt.textContent = label;
 
-      // 4. Rejections Radar
-      document.getElementById('rejectionsTotalBadge').textContent = `${result.rejections.total} REJECTED`;
-      document.getElementById('rejAadhaarCount').textContent = result.rejections.verhoeff;
-      document.getElementById('rejCardCount').textContent = result.rejections.luhn;
-
-      // 5. Findings Highlight Display (Tab 2)
+      // 4. Views
       renderFindingsHighlight(text, result.findings);
-
-      // 6. Redacted Display (Tab 3)
       renderRedactedView(result);
-
-      // 7. JSON Telemetry Display (Tab 4)
       document.getElementById('jsonAuditBox').textContent = JSON.stringify(result, null, 2);
-
-      // 8. Stream Feed
       renderFindingsFeed(result.findings);
-
-      // 9. Rules Matrix Update
       renderRulesMatrix(result.rulesEvaluated);
     }
 
     function renderFindingsHighlight(text, findings) {
       const container = document.getElementById('findingsHighlightBox');
-      if (!text) {
-        container.textContent = "No document text supplied.";
-        return;
-      }
-      if (findings.length === 0) {
-        container.textContent = text;
-        return;
-      }
+      if (!text) { container.textContent = "No document text supplied."; return; }
+      if (findings.length === 0) { container.textContent = text; return; }
 
       container.innerHTML = '';
       let lastIdx = 0;
-
       findings.forEach(f => {
-        // Plain text segment before finding
-        if (f.start > lastIdx) {
-          container.appendChild(document.createTextNode(text.substring(lastIdx, f.start)));
-        }
-
-        // Highlight element
+        if (f.start > lastIdx) container.appendChild(document.createTextNode(text.substring(lastIdx, f.start)));
         const span = document.createElement('span');
-        span.className = 'match-highlight';
+        span.className = 'highlight-span';
         span.style.backgroundColor = f.color;
-        span.setAttribute('data-tag', f.tag);
-        span.title = `${f.detectorName}: ${f.masked} [Span: ${f.start}-${f.end}]`;
         span.textContent = f.value;
-        span.onclick = () => showToast(`Finding: ${f.detectorName} (${f.masked})`);
+        span.title = `${f.detectorName}: ${f.masked}`;
         container.appendChild(span);
-
         lastIdx = f.end;
       });
-
-      if (lastIdx < text.length) {
-        container.appendChild(document.createTextNode(text.substring(lastIdx)));
-      }
+      if (lastIdx < text.length) container.appendChild(document.createTextNode(text.substring(lastIdx)));
     }
 
     function renderRedactedView(result) {
       const container = document.getElementById('redactedTextBox');
-      if (redactMode === 'blackout') {
-        container.textContent = result.redactedBlackout || "No text to redact.";
-      } else {
-        container.textContent = result.redactedTagged || "No text to redact.";
-      }
+      container.textContent = (redactMode === 'blackout') 
+        ? (result.redactedBlackout || "No text.") 
+        : (result.redactedTagged || "No text.");
     }
 
     function renderFindingsFeed(findings) {
       const container = document.getElementById('findingsStreamContainer');
-      document.getElementById('feedCountSpan').textContent = `${findings.length} Items`;
-      
+      document.getElementById('feedCountSpan').textContent = `${findings.length} items`;
       if (findings.length === 0) {
-        container.innerHTML = `<div style="color: var(--text-dim); font-family: var(--font-mono); font-size: 11px; padding: 10px; text-align: center;">No sensitive findings currently identified.</div>`;
+        container.innerHTML = `<div style="color: var(--text-dim); font-size: 11px; padding: 8px; text-align: center;">No sensitive items identified</div>`;
         return;
       }
-
       container.innerHTML = '';
-      findings.forEach((f, idx) => {
+      findings.forEach(f => {
         const row = document.createElement('div');
-        row.className = 'finding-item-row';
-        row.style.setProperty('--item-color', f.color);
+        row.className = 'stream-row';
         row.innerHTML = `
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="det-badge" style="background: ${f.color}; font-size: 9px;">${f.tag}</span>
-            <span class="finding-val-masked">${f.masked}</span>
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${f.color}"></span>
+            <span>${f.masked}</span>
           </div>
-          <div style="text-align: right;">
-            <div style="font-size: 10px; color: var(--text-muted);">${f.detectorName}</div>
-            <div class="finding-span-meta">[${f.start}:${f.end}]</div>
-          </div>
+          <span style="color: var(--text-dim); font-size: 11px;">${f.detectorName}</span>
         `;
         container.appendChild(row);
       });
     }
 
-    function renderRulesMatrix(evaluatedRules) {
+    function renderRulesMatrix(rules) {
       const container = document.getElementById('rulesListContainer');
       container.innerHTML = '';
+      rules.forEach(r => {
+        const card = document.createElement('div');
+        let trig = '';
+        if (r.triggered) trig = r.action === 'BLOCK' ? 'triggered' : 'warn-triggered';
+        card.className = `rule-card ${trig} ${!r.enabled ? 'disabled' : ''}`;
 
-      evaluatedRules.forEach(rule => {
-        const bento = document.createElement('div');
-        let triggerClass = '';
-        if (rule.triggered) {
-          triggerClass = rule.action === 'BLOCK' ? 'triggered' : 'warn-triggered';
-        }
-        bento.className = `rule-bento ${triggerClass} ${!rule.enabled ? 'disabled' : ''}`;
-
-        // Get detector names
-        const detBadges = rule.detectorIds.map(dId => {
-          const det = DETECTORS_CONFIG.find(d => d.id === dId);
-          return `<span class="det-badge" style="background: ${det ? det.color : '#888'};">${det ? det.name : dId}</span>`;
-        }).join('');
-
-        bento.innerHTML = `
-          <div class="rule-head-row">
-            <div class="rule-title-group">
-              <span class="rule-name">${rule.name}</span>
-              <span class="rule-trigger-pill">${rule.status} (${rule.matchCount || 0})</span>
-            </div>
-            <div class="switch-wrap">
-              <input type="checkbox" id="ruleSwitch_${rule.id}" class="switch-input" ${rule.enabled ? 'checked' : ''} onchange="toggleRule('${rule.id}')">
-              <label for="ruleSwitch_${rule.id}" class="switch-label" title="Enable or Disable Rule"></label>
+        card.innerHTML = `
+          <div class="rule-row-top">
+            <span class="rule-name">${r.name}</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="rule-status-badge">${r.status} (${r.matchCount || 0})</span>
+              <div class="toggle ${r.enabled ? 'on' : ''}" onclick="toggleRule('${r.id}')"></div>
             </div>
           </div>
-
-          <div class="detectors-tag-bar">
-            ${detBadges}
-          </div>
-
-          <div class="rule-controls-row">
-            <div class="ctrl-item">
-              <span style="color: var(--text-muted);">Threshold:</span>
-              <input type="number" min="1" max="99" value="${rule.threshold}" class="ctrl-input-num" onchange="updateRuleThreshold('${rule.id}', this.value)">
-            </div>
-            <div class="ctrl-item">
-              <span style="color: var(--text-muted);">Action:</span>
-              <select class="ctrl-select" onchange="updateRuleAction('${rule.id}', this.value)">
-                <option value="BLOCK" ${rule.action === 'BLOCK' ? 'selected' : ''}>BLOCK</option>
-                <option value="WARN" ${rule.action === 'WARN' ? 'selected' : ''}>WARN</option>
-                <option value="LOG" ${rule.action === 'LOG' ? 'selected' : ''}>LOG</option>
-              </select>
-            </div>
+          <div class="rule-params">
+            <span>Threshold:</span>
+            <input type="number" min="1" max="99" value="${r.threshold}" class="input-sm" style="width: 44px;" onchange="updateRuleThreshold('${r.id}', this.value)">
+            <span style="margin-left: 8px;">Action:</span>
+            <select class="input-sm" onchange="updateRuleAction('${r.id}', this.value)">
+              <option value="BLOCK" ${r.action === 'BLOCK' ? 'selected' : ''}>BLOCK</option>
+              <option value="WARN" ${r.action === 'WARN' ? 'selected' : ''}>WARN</option>
+              <option value="LOG" ${r.action === 'LOG' ? 'selected' : ''}>LOG</option>
+            </select>
           </div>
         `;
-        container.appendChild(bento);
+        container.appendChild(card);
       });
     }
 
-    /* ==========================================================================
-       6. INTERACTIVE CONTROLS & EVENT HANDLERS
-       ========================================================================== */
+    /* CONTROLS */
     const textarea = document.getElementById('rawInputText');
 
-    function triggerScanNow(playSound = false) {
+    function triggerScanNow() {
       let text = textarea.value;
-      if (text.length > 200000) {
-        text = text.substring(0, 200000);
-        showToast("⚠️ Input truncated to 200,000 character limit.");
-      }
-      const prevVerdict = currentScanResult ? currentScanResult.verdict : null;
+      if (text.length > 200000) text = text.substring(0, 200000);
       const res = executeScan(text);
       renderUI(res, text);
-
-      if (playSound || (prevVerdict && prevVerdict !== res.verdict)) {
-        playSoundAlert(res.verdict);
-      }
     }
 
-    textarea.addEventListener('input', () => {
-      triggerScanNow(false);
-    });
+    textarea.addEventListener('input', triggerScanNow);
 
-    // Rule Toggles & Updates
-    function toggleRule(ruleId) {
-      const rule = RULES.find(r => r.id === ruleId);
-      if (rule) {
-        rule.enabled = !rule.enabled;
-        triggerScanNow(true);
-        showToast(`Rule "${rule.name}" is now ${rule.enabled ? 'ENABLED' : 'DISABLED'}`);
-      }
+    function toggleRule(id) {
+      const r = RULES.find(x => x.id === id);
+      if (r) { r.enabled = !r.enabled; triggerScanNow(); }
     }
 
-    function updateRuleThreshold(ruleId, val) {
-      const rule = RULES.find(r => r.id === ruleId);
-      if (rule) {
-        rule.threshold = Math.max(1, parseInt(val) || 1);
-        triggerScanNow(true);
-        showToast(`Rule "${rule.name}" threshold set to ${rule.threshold}`);
-      }
+    function updateRuleThreshold(id, v) {
+      const r = RULES.find(x => x.id === id);
+      if (r) { r.threshold = Math.max(1, parseInt(v) || 1); triggerScanNow(); }
     }
 
-    function updateRuleAction(ruleId, val) {
-      const rule = RULES.find(r => r.id === ruleId);
-      if (rule) {
-        rule.action = val;
-        triggerScanNow(true);
-        showToast(`Rule "${rule.name}" action set to ${rule.action}`);
-      }
+    function updateRuleAction(id, v) {
+      const r = RULES.find(x => x.id === id);
+      if (r) { r.action = v; triggerScanNow(); }
     }
 
-    // Tabs Switcher
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    tabButtons.forEach(btn => {
+    // Tabs
+    document.querySelectorAll('.tab-item').forEach(btn => {
       btn.addEventListener('click', () => {
-        tabButtons.forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const targetId = btn.getAttribute('data-tab');
-        
+        const target = btn.getAttribute('data-tab');
         ['tab-editor', 'tab-findings', 'tab-redacted', 'tab-audit'].forEach(id => {
-          document.getElementById(id).style.display = (id === targetId) ? 'flex' : 'none';
+          document.getElementById(id).style.display = (id === target) ? 'flex' : 'none';
         });
-
-        playTone(600, 'sine', 0.05);
       });
     });
 
-    // Redaction Mode Switcher
     document.getElementById('toggleRedactModeBtn').addEventListener('click', () => {
       redactMode = (redactMode === 'blackout') ? 'tagged' : 'blackout';
-      document.getElementById('redactModeTxt').textContent = (redactMode === 'blackout') 
-        ? 'BLACKOUT BARS (███)' 
-        : 'TAGGED TOKENS ([REDACTED])';
-      if (currentScanResult) {
-        renderRedactedView(currentScanResult);
-      }
-      playTone(500, 'sine', 0.06);
+      document.getElementById('redactModeTxt').textContent = (redactMode === 'blackout') ? 'Blackout (███)' : 'Tagged ([TOKEN])';
+      if (currentScanResult) renderRedactedView(currentScanResult);
     });
 
-    // Custom Regex Studio
+    // Custom regex
     document.getElementById('applyCustomRegexBtn').addEventListener('click', () => {
-      const patternVal = document.getElementById('customRegexInput').value.trim();
-      const errEl = document.getElementById('regexErrorMsg');
-      if (!patternVal) {
-        errEl.textContent = "Please enter a valid regular expression.";
-        errEl.style.display = "block";
-        return;
-      }
+      const val = document.getElementById('customRegexInput').value.trim();
+      const err = document.getElementById('regexErrorMsg');
       try {
-        const regex = new RegExp(patternVal, 'g');
-        const customDet = DETECTORS_CONFIG.find(d => d.id === 'D7');
-        if (customDet) {
-          customDet.regex = regex;
-        }
-        errEl.style.display = "none";
-        triggerScanNow(true);
-        showToast("✓ Custom Regex Detector D7 updated and scanned!");
-      } catch (err) {
-        errEl.textContent = `RegEx Syntax Error: ${err.message}`;
-        errEl.style.display = "block";
+        const regex = new RegExp(val, 'g');
+        const det = DETECTORS_CONFIG.find(d => d.id === 'D7');
+        if (det) det.regex = regex;
+        err.style.display = 'none';
+        triggerScanNow();
+        showToast("Custom regex applied");
+      } catch (e) {
+        err.style.display = 'block';
       }
     });
 
-    // Preset Samples (Matches the 6 Faculty Test Files)
+    // PRESETS
     const PRESETS = {
-      test1: `======================================================================
-TEST CASE 01: AADHAAR GOVERNMENT IDENTIFIER LEAK (VERHOEFF CHECKSUM)
-Expected Result: Rule 'Government ID leak' Triggers -> Verdict: BLOCKED
-======================================================================
-Candidate 1 (Valid Aadhaar with Verhoeff Checksum):
+      test1: `Candidate 1 (Valid Aadhaar with Verhoeff Checksum):
 Name: Rajesh K. Verma
 Aadhaar Number: 2345 6789 0124
 Status: Validated by Verhoeff Dihedral D5 algorithm -> FLAGGED SENSITIVE
 
 Candidate 2 (Invalid Aadhaar - False Positive Candidate):
 Account Serial: 1234 5678 9012
-Status: Rejected by Verhoeff checksum -> SUPPRESSED AS FALSE POSITIVE
+Status: Rejected by Verhoeff checksum -> SUPPRESSED AS FALSE POSITIVE`,
 
-Candidate 3 (Valid Aadhaar Format):
-Guardian Aadhaar: 9876 5432 1098
-Status: Detected and queued for redaction.
-======================================================================`,
+      test2: `TRANSACTION AUDIT:
+Valid Visa Corporate Card: 4532 0151 1283 0366
+Rejected Test Serial: 1234 5678 9012 3456 (Failed Luhn check)
+Billing Contact: billing-ops@fintech.net`,
 
-      test2: `======================================================================
-TEST CASE 02: PAYMENT CARD BREACH & LUHN INTEGRITY DEMONSTRATION
-Expected Result: Rule 'Payment data' Triggers -> Verdict: BLOCKED
-======================================================================
-TRANSACTION AUDIT DUMP:
-Terminal ID: POS-TERMINAL-HYD-04
-Merchant: Campus Cafeteria & Store
+      test3: `Employee: Amit Shah | PAN: ABCDE1234F
+Employee: Sunita Rao | PAN: BNKPS9821L
+Server Credentials: password: Admin@123 | passwd=SecureDev#2026!`,
 
-Valid Visa Corporate Card:
-Card Number: 4532 0151 1283 0366
-Validation: Luhn Modulo-10 Checksum Passed -> BLOCKED!
-
-Random 16-Digit Device Serial (Should NOT be flagged):
-Hardware Serial Number: 1234 5678 9012 3456
-Validation: Luhn Checksum Failed -> False Positive Suppressed!
-
-Billing Reference: billing-gateway@campus-network.org
-======================================================================`,
-
-      test3: `======================================================================
-TEST CASE 03: TAX IDENTIFIERS (PAN) & ROOT SYSTEM CREDENTIAL LEAK
-Expected Result: 'Government ID leak' & 'Credentials' Trigger -> BLOCKED
-======================================================================
-EMPLOYEE ONBOARDING & DB INITIALIZATION DUMP:
-
-Personnel Record 1:
-Employee Name: Amit Shah
-Income Tax Permanent Account Number (PAN): ABCDE1234F
-Tax Assessment Circle: Ward 12(3), Hyderabad
-
-Personnel Record 2:
-Employee Name: Sunita Rao
-Income Tax PAN: BNKPS9821L
-
-Server Environment Configuration:
-DATABASE_HOST = db.internal.college.edu
-DB_USER = root_admin
-password: Admin@123
-passwd=SecureDev#2026!
-======================================================================`,
-
-      test4: `======================================================================
-TEST CASE 04: BULK PERSONAL DATA DIRECTORY (THRESHOLD POLICY DEMO)
-Expected Result: Rule 'Bulk personal data' Triggers at Threshold 5 -> WARN
-======================================================================
-STUDENT ADMISSION PLACEMENT DIRECTORY:
-Department of Computer Science & Engineering
-Batch 2024 - 2028
-
-1. M. Teja Reddy       | teja.reddy@institution.edu    | +91 9876543210
-2. M. Hrishikesh       | hrishikesh.m@institution.edu  | 9823019283
-3. Mohammed Aman       | aman.mohammed@institution.edu | +91 9712345678
+      test4: `1. M. Teja Reddy | teja.reddy@institution.edu | +91 9876543210
+2. M. Hrishikesh | hrishikesh.m@institution.edu | 9823019283
+3. Mohammed Aman | aman.mohammed@institution.edu | +91 9712345678
 4. Mohammed Junade Pasha | junade.pasha@institution.edu | 9845123456
-5. Mohammed Saif Patel | saif.patel@institution.edu    | +91 9654321098
-6. M. Mahender Yadav   | mahender.y@institution.edu    | 9812345678
-7. M. Rithika Reddy    | rithika.reddy@institution.edu | +91 9988776655
+5. Mohammed Saif Patel | saif.patel@institution.edu | +91 9654321098
+6. M. Mahender Yadav | mahender.y@institution.edu | 9812345678`,
 
-Notice: Individual email communications do NOT trigger a block.
-Bulk sharing exceeding threshold of 5 items elevates policy to WARNING!
-======================================================================`,
-
-      test5: `======================================================================
-TEST CASE 05: CUSTOM REGEX POLICY DEMONSTRATION (STAFF BADGES)
-Expected Result: Rule 'Custom keyword rule' Triggers on EMP-\\d{5} -> WARN
-======================================================================
-FACILITY ACCESS CONTROL LOG:
-Gate 01 - Main Academic Block
-Under Guidance: Asst Prof Mr V Shiva kumar
-
-Card Swipe Entries:
+      test5: `FACILITY ACCESS LOG:
 [ENTRY 08:31] Staff Member authenticated with Badge: EMP-20481
 [ENTRY 08:45] Research Fellow scanned Badge: EMP-91024
-[ENTRY 09:12] Lab Attendant scanned Badge: EMP-55102
-[ENTRY 09:30] Guest visitor without staff badge entered lobby.
+[ENTRY 09:12] Lab Attendant scanned Badge: EMP-55102`,
 
-Policy Engine Status:
-Detector D7 configured with Pattern: EMP-\\d{5}
-Custom Policy Rule triggers elevated caution on proprietary staff badges.
-======================================================================`,
-
-      test6: `======================================================================
-TEST CASE 06: UNCLASSIFIED CLEAN ACADEMIC ABSTRACT (ZERO SENSITIVE DATA)
-Expected Result: No detectors trigger -> Verdict: CLEAN (Risk Score: 0/100)
-======================================================================
-INFORMATION AND CYBER SECURITY LAB
-DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
-MICRO-PROJECT REPORT ABSTRACT:
-
-Title: Mini Data Loss Prevention (DLP) Content Scanner
-Supervisor: Asst Prof Mr V Shiva kumar
-
-Abstract:
-Data Loss Prevention represents a crucial pillar in modern enterprise
+      test6: `Data Loss Prevention represents a crucial pillar in modern enterprise
 confidentiality architecture. This micro-project demonstrates the
-fundamental 'detector-within-a-rule' paradigm, showcasing how pattern
-matching combined with cryptographic checksum validation (Verhoeff and Luhn)
-prevents catastrophic data exfiltration while minimizing false positives.
-
-All mathematical computations are executed locally in memory.
-No sensitive identifiers, credentials, or proprietary tokens exist
-within this abstract document.
-
-Policy Outcome: CLEAN
-Threat Risk Meter: 0 / 100
-Action Status: AUTHORIZED FOR DISTRIBUTION
-======================================================================`
+detector-within-a-rule paradigm. No sensitive tokens exist in this document.`
     };
 
-    function loadSamplePreset(key) {
-      textarea.value = PRESETS[key] || '';
-      triggerScanNow(true);
-      showToast(`Loaded preset sample: ${key.toUpperCase()}`);
+    function loadSamplePreset(k) {
+      textarea.value = PRESETS[k] || '';
+      triggerScanNow();
+      showToast(`Loaded Sample ${k}`);
     }
 
     function clearEditor() {
       textarea.value = '';
-      triggerScanNow(true);
-      showToast("Editor cleared.");
+      triggerScanNow();
     }
 
-    // Drag and Drop & File Upload
+    // Drag & Drop
     const dropzone = document.getElementById('dropzoneOverlay');
     const fileInput = document.getElementById('fileInput');
-
     dropzone.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
-      if (file) handleUploadedFile(file);
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => { textarea.value = ev.target.result; triggerScanNow(); };
+        reader.readAsText(file);
+      }
     });
 
-    ['dragenter', 'dragover'].forEach(name => {
-      dropzone.addEventListener(name, (e) => {
-        e.preventDefault();
-        dropzone.classList.add('dragover');
-      });
-    });
-
-    ['dragleave', 'drop'].forEach(name => {
-      dropzone.addEventListener(name, (e) => {
-        e.preventDefault();
-        dropzone.classList.remove('dragover');
-      });
-    });
-
-    dropzone.addEventListener('drop', (e) => {
-      const file = e.dataTransfer.files[0];
-      if (file) handleUploadedFile(file);
-    });
-
-    function handleUploadedFile(file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        textarea.value = e.target.result;
-        triggerScanNow(true);
-        showToast(`Loaded file: ${file.name} (${file.size} bytes)`);
-      };
-      reader.readAsText(file);
-    }
-
-    // Copy & Export Handlers
+    // Copy / Export
     document.getElementById('copyRedactedBtn').addEventListener('click', () => {
       if (!currentScanResult) return;
-      const content = (redactMode === 'blackout') ? currentScanResult.redactedBlackout : currentScanResult.redactedTagged;
-      navigator.clipboard.writeText(content).then(() => {
-        showToast("✓ Redacted document copied to clipboard!");
-      });
+      const c = (redactMode === 'blackout') ? currentScanResult.redactedBlackout : currentScanResult.redactedTagged;
+      navigator.clipboard.writeText(c).then(() => showToast("Copied redacted text"));
     });
 
     document.getElementById('downloadRedactedBtn').addEventListener('click', () => {
       if (!currentScanResult) return;
-      const content = (redactMode === 'blackout') ? currentScanResult.redactedBlackout : currentScanResult.redactedTagged;
-      const blob = new Blob([content], { type: 'text/plain' });
+      const c = (redactMode === 'blackout') ? currentScanResult.redactedBlackout : currentScanResult.redactedTagged;
+      const blob = new Blob([c], { type: 'text/plain' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `redacted_document_${Date.now()}.txt`;
+      a.download = `redacted_${Date.now()}.txt`;
       a.click();
-      showToast("✓ Downloaded redacted file!");
     });
 
     document.getElementById('copyJsonBtn').addEventListener('click', () => {
       if (!currentScanResult) return;
-      navigator.clipboard.writeText(JSON.stringify(currentScanResult, null, 2)).then(() => {
-        showToast("✓ JSON Audit Telemetry copied to clipboard!");
-      });
+      navigator.clipboard.writeText(JSON.stringify(currentScanResult, null, 2)).then(() => showToast("Copied JSON report"));
     });
 
-    // Theme Switcher (Dark Maximalist vs Light Neo-Brutalist)
-    let isDarkTheme = true;
+    // Theme
+    let isDark = true;
     document.getElementById('themeToggleBtn').addEventListener('click', () => {
-      isDarkTheme = !isDarkTheme;
-      document.body.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
-      document.getElementById('themeIcon').textContent = isDarkTheme ? '☀️' : '🌙';
-      playTone(450, 'sine', 0.08);
-      showToast(`Switched to ${isDarkTheme ? 'Dark Cyberpunk' : 'Light Neo-Brutalist'} Mode`);
+      isDark = !isDark;
+      document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
     });
 
-    // Audio Mute Toggle
-    document.getElementById('audioToggleBtn').addEventListener('click', () => {
-      audioEnabled = !audioEnabled;
-      document.getElementById('audioStateTxt').textContent = audioEnabled ? 'ON' : 'OFF';
-      document.getElementById('audioIcon').textContent = audioEnabled ? '🔊' : '🔇';
-      showToast(`Audio cues ${audioEnabled ? 'ENABLED' : 'MUTED'}`);
-      if (audioEnabled) playTone(550, 'sine', 0.1);
-    });
+    document.getElementById('printReportBtn').addEventListener('click', () => window.print());
 
-    // CRT Scanline Toggle
-    document.getElementById('scanlineToggleBtn').addEventListener('click', () => {
-      const el = document.getElementById('scanlinesOverlay');
-      el.classList.toggle('disabled');
-      showToast("Toggled CRT scanline overlay.");
-    });
-
-    // Print Lab Viva Report
-    document.getElementById('printReportBtn').addEventListener('click', () => {
-      window.print();
-    });
-
-    // Toast Notification helper
     function showToast(msg) {
-      const toast = document.getElementById('hudToast');
-      document.getElementById('toastMsg').textContent = msg;
-      toast.style.display = 'flex';
-      clearTimeout(toast._timer);
-      toast._timer = setTimeout(() => {
-        toast.style.display = 'none';
-      }, 3200);
+      const t = document.getElementById('hudToast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => { t.style.display = 'none'; }, 2200);
     }
 
-    // Check live Python backend API status
-    async function checkBackendStatus() {
-      const pill = document.getElementById('backendStatusPill');
+    async function checkBackend() {
       try {
         const res = await fetch('/api/health');
         if (res.ok) {
-          const data = await res.json();
-          pill.innerHTML = `🟢 BACKEND: ONLINE (PORT 8000)`;
-          pill.style.borderColor = 'var(--neon-green)';
-          pill.style.color = 'var(--neon-green)';
-          showToast(`✓ Connected to Redact Python Backend Engine on http://localhost:8000`);
-        } else {
-          pill.innerHTML = `⚡ STANDALONE CLIENT ENGINE`;
+          document.getElementById('backendStatusPill').innerHTML = `<span class="dot" style="background:var(--success)"></span> Backend Online`;
         }
-      } catch (e) {
-        pill.innerHTML = `⚡ STANDALONE CLIENT ENGINE`;
-      }
+      } catch (e) {}
     }
 
-    // INITIAL LAUNCH: Load Test Case 1 Preset & check backend
     window.addEventListener('DOMContentLoaded', () => {
       loadSamplePreset('test1');
-      checkBackendStatus();
+      checkBackend();
     });
   </script>
 </body>
