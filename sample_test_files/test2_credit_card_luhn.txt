@@ -1,0 +1,18 @@
+======================================================================
+TEST CASE 02: PAYMENT CARD BREACH & LUHN INTEGRITY DEMONSTRATION
+Expected Result: Rule 'Payment data' Triggers -> Verdict: BLOCKED
+======================================================================
+TRANSACTION AUDIT DUMP:
+Terminal ID: POS-TERMINAL-HYD-04
+Merchant: Campus Cafeteria & Store
+
+Valid Visa Corporate Card:
+Card Number: 4532 0151 1283 0366
+Validation: Luhn Modulo-10 Checksum Passed -> BLOCKED!
+
+Random 16-Digit Device Serial (Should NOT be flagged):
+Hardware Serial Number: 1234 5678 9012 3456
+Validation: Luhn Checksum Failed -> False Positive Suppressed!
+
+Billing Reference: billing-gateway@campus-network.org
+======================================================================

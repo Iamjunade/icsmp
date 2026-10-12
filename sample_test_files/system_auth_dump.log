@@ -1,0 +1,5 @@
+2026-10-11 12:41:02 [AUTH_DAEMON] Connection established from node 192.168.1.104
+2026-10-11 12:41:03 [AUTH_DAEMON] DEBUG: Received credentials payload: password: Admin@123 for root_admin
+2026-10-11 12:41:05 [PAYMENT_GATEWAY] Tokenizing transaction on corporate card: 4532 0151 1283 0366
+2026-10-11 12:41:08 [PAYMENT_GATEWAY] Invalid card candidate detected and rejected: 1234 5678 9012 3456
+2026-10-11 12:41:12 [SESSION] Contact dev-ops team via security-ops@corp.internal

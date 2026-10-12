@@ -1,0 +1,19 @@
+======================================================================
+TEST CASE 04: BULK PERSONAL DATA DIRECTORY (THRESHOLD POLICY DEMO)
+Expected Result: Rule 'Bulk personal data' Triggers at Threshold 5 -> WARN
+======================================================================
+STUDENT ADMISSION PLACEMENT DIRECTORY:
+Department of Computer Science & Engineering
+Batch 2024 - 2028
+
+1. M. Teja Reddy       | teja.reddy@institution.edu    | +91 9876543210
+2. M. Hrishikesh       | hrishikesh.m@institution.edu  | 9823019283
+3. Mohammed Aman       | aman.mohammed@institution.edu | +91 9712345678
+4. Mohammed Junade Pasha | junade.pasha@institution.edu | 9845123456
+5. Mohammed Saif Patel | saif.patel@institution.edu    | +91 9654321098
+6. M. Mahender Yadav   | mahender.y@institution.edu    | 9812345678
+7. M. Rithika Reddy    | rithika.reddy@institution.edu | +91 9988776655
+
+Notice: Individual email communications do NOT trigger a block.
+Bulk sharing exceeding threshold of 5 items elevates policy to WARNING!
+======================================================================

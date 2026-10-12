@@ -1,0 +1,18 @@
+======================================================================
+TEST CASE 05: CUSTOM REGEX POLICY DEMONSTRATION (STAFF BADGES)
+Expected Result: Rule 'Custom keyword rule' Triggers on EMP-\d{5} -> WARN
+======================================================================
+FACILITY ACCESS CONTROL LOG:
+Gate 01 - Main Academic Block
+Under Guidance: Asst Prof Mr V Shiva kumar
+
+Card Swipe Entries:
+[ENTRY 08:31] Staff Member authenticated with Badge: EMP-20481
+[ENTRY 08:45] Research Fellow scanned Badge: EMP-91024
+[ENTRY 09:12] Lab Attendant scanned Badge: EMP-55102
+[ENTRY 09:30] Guest visitor without staff badge entered lobby.
+
+Policy Engine Status:
+Detector D7 configured with Pattern: EMP-\d{5}
+Custom Policy Rule triggers elevated caution on proprietary staff badges.
+======================================================================

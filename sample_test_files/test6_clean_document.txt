@@ -1,0 +1,26 @@
+======================================================================
+TEST CASE 06: UNCLASSIFIED CLEAN ACADEMIC ABSTRACT (ZERO SENSITIVE DATA)
+Expected Result: No detectors trigger -> Verdict: CLEAN (Risk Score: 0/100)
+======================================================================
+INFORMATION AND CYBER SECURITY LAB
+DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
+MICRO-PROJECT REPORT ABSTRACT:
+
+Title: Mini Data Loss Prevention (DLP) Content Scanner
+Supervisor: Asst Prof Mr V Shiva kumar
+
+Abstract:
+Data Loss Prevention represents a crucial pillar in modern enterprise
+confidentiality architecture. This micro-project demonstrates the
+fundamental 'detector-within-a-rule' paradigm, showcasing how pattern
+matching combined with cryptographic checksum validation (Verhoeff and Luhn)
+prevents catastrophic data exfiltration while minimizing false positives.
+
+All mathematical computations are executed locally in memory.
+No sensitive identifiers, credentials, or proprietary tokens exist
+within this abstract document.
+
+Policy Outcome: CLEAN
+Threat Risk Meter: 0 / 100
+Action Status: AUTHORIZED FOR DISTRIBUTION
+======================================================================

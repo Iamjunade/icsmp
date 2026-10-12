@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REDACT // SENSITIVE CONTENT SCANNER (MINI DLP)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       MAXIMALISM DESIGN SYSTEM: HIGH-OCTANE CYBER DEFENSE MATRIX
+       ========================================================================== */
+    :root {
+      --bg-base: #08090e;
+      --bg-surface: #0f121d;
+      --bg-card: #151928;
+      --bg-card-hover: #1c2237;
+      --border-bright: #2d3756;
+      --border-active: #00f0ff;
+      --text-main: #f0f4fc;
+      --text-muted: #8b9bb4;
+      --text-dim: #53627c;
+      
+      /* Neon Palette */
+      --neon-cyan: #00f0ff;
+      --neon-pink: #ff007a;
+      --neon-yellow: #ffe600;
+      --neon-red: #ff2a2a;
+      --neon-green: #39ff14;
+      --neon-purple: #b026ff;
+      --neon-orange: #ff7700;
+
+      /* Detector Accent Colors */
+      --det-aadhaar: #ff007a;
+      --det-card: #00f0ff;
+      --det-pan: #ffe600;
+      --det-password: #ff2a2a;
+      --det-email: #39ff14;
+      --det-phone: #b026ff;
+      --det-custom: #ff7700;
+
+      /* Status Glows */
+      --glow-cyan: 0 0 15px rgba(0, 240, 255, 0.45);
+      --glow-pink: 0 0 18px rgba(255, 0, 122, 0.55);
+      --glow-red: 0 0 20px rgba(255, 42, 42, 0.65);
+      --glow-green: 0 0 16px rgba(57, 255, 20, 0.5);
+
+      --font-display: 'Syne', sans-serif;
+      --font-tech: 'Chakra Petch', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-base: #f4f6fc;
+      --bg-surface: #ffffff;
+      --bg-card: #eaedf7;
+      --bg-card-hover: #e0e5f2;
+      --border-bright: #cbd5e1;
+      --border-active: #0052cc;
+      --text-main: #0b1120;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --glow-cyan: 0 4px 14px rgba(0, 82, 204, 0.25);
+      --glow-pink: 0 4px 14px rgba(225, 29, 72, 0.25);
+      --glow-red: 0 4px 14px rgba(220, 38, 38, 0.3);
+      --glow-green: 0 4px 14px rgba(22, 163, 74, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-tech);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        radial-gradient(ellipse at 15% 0%, rgba(255, 0, 122, 0.12), transparent 45%),
+        radial-gradient(ellipse at 85% 15%, rgba(0, 240, 255, 0.1), transparent 50%);
+      background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%;
+    }
+
+    /* CRT Scanlines Overlay (Optional toggle) */
+    .scanlines-overlay {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 9999;
+      opacity: 0.35;
+      display: block;
+    }
+    .scanlines-overlay.disabled {
+      display: none;
+    }
+
+    /* Top Marquee Cyber Ticker */
+    .top-ticker {
+      background: #000000;
+      border-bottom: 2px solid var(--border-bright);
+      overflow: hidden;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+    .ticker-row-faculty {
+      background: linear-gradient(90deg, #0f121d 0%, #1a0826 50%, #081a26 100%);
+      color: #ffffff;
+      font-family: var(--font-tech);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+      display: flex;
+      align-items: center;
+    }
+    .ticker-row-system {
+      background: #000000;
+      color: var(--neon-cyan);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 5px 0;
+      display: flex;
+      align-items: center;
+    }
+    .ticker-track-ltr {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marqueeLTR 40s linear infinite;
+    }
+    .ticker-track-rtl {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marqueeRTL 35s linear infinite;
+    }
+    @keyframes marqueeLTR {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0%); }
+    }
+    @keyframes marqueeRTL {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-tag-mentor {
+      background: var(--neon-yellow);
+      color: #000000;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-weight: 800;
+      margin: 0 8px;
+    }
+    .ticker-tag-member {
+      background: rgba(255, 0, 122, 0.2);
+      border: 1px solid var(--neon-pink);
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      margin: 0 6px;
+    }
+
+    /* Main Container */
+    .app-wrapper {
+      max-width: 1720px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+    }
+
+    /* HEADER: Brutalist Maximalist Command Banner */
+    .header-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      background: var(--bg-surface);
+      border: 2px solid var(--border-bright);
+      border-left: 8px solid var(--neon-cyan);
+      padding: 18px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+    .header-bar::after {
+      content: "PROJECT: REDACT // ICS-LAB MP-06";
+      position: absolute;
+      top: -10px;
+      right: 24px;
+      background: var(--neon-cyan);
+      color: #000000;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 10px;
+      letter-spacing: 1px;
+      clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+    }
+
+    .brand-title-wrap h1 {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-title-wrap h1 .glitch-text {
+      background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    }
+    .brand-title-wrap p {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-family: var(--font-mono);
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* PROJECT TITLE SHOWCASE BANNER (Maximalist Lab Exhibit) */
+    .project-title-showcase {
+      background: linear-gradient(135deg, rgba(15, 18, 29, 0.95) 0%, rgba(21, 25, 40, 0.98) 50%, rgba(8, 9, 14, 0.95) 100%);
+      border: 2px solid var(--border-bright);
+      border-top: 3px solid var(--neon-cyan);
+      border-bottom: 3px solid var(--neon-pink);
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(0, 240, 255, 0.04);
+    }
+    .project-title-showcase::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--neon-cyan), var(--neon-yellow), var(--neon-pink));
+    }
+    .showcase-header-tagline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--neon-cyan);
+    }
+    .showcase-main-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      line-height: 1.25;
+      color: #ffffff;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .title-highlight-quote {
+      background: linear-gradient(90deg, #ffffff 0%, var(--neon-yellow) 50%, var(--neon-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px rgba(255, 230, 0, 0.25);
+    }
+    .title-sub-descriptor {
+      font-family: var(--font-tech);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+    }
+    .showcase-pipeline-chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .pipe-step-chip {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-bright);
+      padding: 4px 12px;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+    }
+    .pipe-arrow {
+      color: var(--neon-yellow);
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--neon-green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--neon-green);
+      animation: blinkDot 1.2s infinite ease-in-out;
+    }
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.7); }
+    }
+
+    /* Header Controls */
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hud-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      color: var(--text-main);
+      padding: 8px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+    }
+    .hud-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--neon-cyan);
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px var(--neon-cyan);
+      color: #ffffff;
+    }
+    .hud-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px var(--neon-cyan);
+    }
+    .hud-btn.active {
+      border-color: var(--neon-pink);
+      color: var(--neon-pink);
+    }
+
+    /* ==========================================================================
+       HERO VERDICT STAMP & TELEMETRY HUD BAR
+       ========================================================================== */
+    .telemetry-deck {
+      display: grid;
+      grid-template-columns: 340px 1fr 340px;
+      gap: 20px;
+    }
+    @media (max-width: 1200px) {
+      .telemetry-deck {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Verdict Stamp Box */
+    .verdict-stamp-box {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-bright);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+    }
+    .verdict-stamp-box::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--verdict-color, var(--neon-green));
+      box-shadow: 0 0 10px var(--verdict-color, var(--neon-green));
+    }
+    .stamp-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    
+    /* Physical Rubber Stamp Aesthetic */
+    .stamp-badge {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      border: 5px solid;
+      border-radius: 4px;
+      transform: rotate(-3deg);
+      display: inline-block;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .stamp-badge.CLEAN {
+      color: var(--neon-green);
+      border-color: var(--neon-green);
+      background: rgba(57, 255, 20, 0.08);
+      box-shadow: 0 0 25px rgba(57, 255, 20, 0.3);
+      --verdict-color: var(--neon-green);
+    }
+    .stamp-badge.WARNING {
+      color: var(--neon-yellow);
+      border-color: var(--neon-yellow);
+      background: rgba(255, 230, 0, 0.1);
+      box-shadow: 0 0 30px rgba(255, 230, 0, 0.4);
+      --verdict-color: var(--neon-yellow);
+      animation: hazardPulse 2s infinite alternate;
+    }
+    .stamp-badge.BLOCKED {
+      color: var(--neon-red);
+      border-color: var(--neon-red);
+      background: rgba(255, 42, 42, 0.12);
+      box-shadow: 0 0 35px rgba(255, 42, 42, 0.6);
+      --verdict-color: var(--neon-red);
+      animation: blockStampShake 0.4s ease-in-out;
+    }
+    .stamp-badge.LOG {
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.08);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
+      --verdict-color: var(--neon-cyan);
+    }
+    @keyframes blockStampShake {
+      0% { transform: scale(1.3) rotate(-10deg); }
+      50% { transform: scale(0.95) rotate(2deg); }
+      100% { transform: scale(1) rotate(-3deg); }
+    }
+    @keyframes hazardPulse {
+      from { box-shadow: 0 0 20px rgba(255, 230, 0, 0.3); }
+      to { box-shadow: 0 0 40px rgba(255, 230, 0, 0.7); }
+    }
+    .stamp-meta {
+      margin-top: 12px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+
+    /* Center Bento: Telemetry Counters */
+    .counters-bento {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-bright);
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      align-items: center;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+    }
+    @media (max-width: 768px) {
+      .counters-bento {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .counter-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      padding: 14px 16px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .counter-card::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent-bar, var(--neon-cyan));
+    }
+    .counter-card .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+    .counter-card .value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      color: #ffffff;
+    }
+    .counter-card .subtext {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+    }
+
+    /* Right Bento: Risk Gauge Meter */
+    .risk-gauge-box {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-bright);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+      position: relative;
+    }
+    .gauge-circle-wrap {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+    }
+    .gauge-circle-wrap svg {
+      transform: rotate(-90deg);
+      width: 100px;
+      height: 100px;
+    }
+    .gauge-bg {
+      fill: none;
+      stroke: var(--bg-card);
+      stroke-width: 9;
+    }
+    .gauge-val {
+      fill: none;
+      stroke: var(--gauge-color, var(--neon-green));
+      stroke-width: 9;
+      stroke-linecap: round;
+      stroke-dasharray: 264;
+      stroke-dashoffset: 264;
+      transition: stroke-dashoffset 0.6s ease, stroke 0.6s ease;
+      filter: drop-shadow(0 0 6px var(--gauge-color, var(--neon-green)));
+    }
+    .gauge-score-display {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+    .risk-info-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .risk-info-wrap .risk-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .risk-info-wrap .risk-level {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--gauge-color, var(--neon-green));
+      text-transform: uppercase;
+    }
+    .risk-info-wrap .risk-desc {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       MAIN WORKSPACE LAYOUT (2 COLUMNS: DOCUMENT DOCK + RULES MATRIX)
+       ========================================================================== */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 1100px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Dock: Document Console */
+    .dock-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-bright);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Card Tabs */
+    .dock-tabs {
+      background: #000000;
+      border-bottom: 2px solid var(--border-bright);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      padding: 6px 8px 0;
+    }
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-bottom: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.5px;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .tab-btn:hover {
+      background: var(--bg-card-hover);
+      color: #ffffff;
+    }
+    .tab-btn.active {
+      background: var(--bg-surface);
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
+      border-bottom: 2px solid var(--bg-surface);
+      margin-bottom: -2px;
+      box-shadow: 0 -3px 10px rgba(0, 240, 255, 0.2);
+    }
+    .tab-badge {
+      background: var(--neon-pink);
+      color: #ffffff;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 800;
+    }
+
+    /* Preset Triggers Bar */
+    .preset-bar {
+      background: rgba(0, 0, 0, 0.4);
+      border-bottom: 1px solid var(--border-bright);
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .preset-title {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+    .preset-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      color: var(--text-main);
+      font-family: var(--font-tech);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .preset-chip:hover {
+      border-color: var(--neon-yellow);
+      background: rgba(255, 230, 0, 0.15);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* Dock Content Body */
+    .dock-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 480px;
+    }
+
+    /* Textarea Area */
+    .editor-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .code-textarea {
+      width: 100%;
+      height: 380px;
+      background: #05060a;
+      border: 2px solid var(--border-bright);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      line-height: 1.6;
+      padding: 16px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .code-textarea:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+
+    /* File Drop Zone */
+    .dropzone-overlay {
+      border: 2px dashed var(--border-bright);
+      background: rgba(0, 240, 255, 0.03);
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      transition: all 0.2s ease;
+    }
+    .dropzone-overlay:hover, .dropzone-overlay.dragover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      color: #ffffff;
+    }
+
+    /* Live Length Limit Counter */
+    .editor-footer-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    .char-limit-bar {
+      width: 160px;
+      height: 6px;
+      background: var(--bg-card);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-left: 8px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .char-limit-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--neon-green);
+      transition: width 0.2s ease, background 0.2s ease;
+    }
+    .char-limit-fill.warn { background: var(--neon-yellow); }
+    .char-limit-fill.danger { background: var(--neon-red); }
+
+    /* FINDINGS VIEW (HIGHLIGHTED CODES) */
+    .findings-display {
+      background: #05060a;
+      border: 2px solid var(--border-bright);
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      line-height: 1.8;
+      min-height: 380px;
+      max-height: 520px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .match-highlight {
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 700;
+      color: #000000;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease;
+      display: inline-block;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+    .match-highlight:hover {
+      transform: scale(1.05);
+      filter: brightness(1.2);
+    }
+    .match-highlight::after {
+      content: attr(data-tag);
+      font-size: 9px;
+      vertical-align: super;
+      margin-left: 4px;
+      padding: 1px 3px;
+      background: rgba(0,0,0,0.7);
+      color: #ffffff;
+      border-radius: 2px;
+    }
+
+    /* REDACTED VIEW */
+    .redacted-display {
+      background: #020204;
+      border: 2px solid var(--border-bright);
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      line-height: 1.8;
+      min-height: 380px;
+      max-height: 520px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: #d1d5db;
+    }
+    .blackout-bar {
+      background: #000000;
+      color: #000000;
+      padding: 0 2px;
+      border-radius: 1px;
+      user-select: all;
+      box-shadow: 0 0 4px #000000;
+      border-bottom: 2px solid #ff2a2a;
+    }
+    .tagged-token {
+      background: rgba(255, 42, 42, 0.2);
+      border: 1px dashed var(--neon-red);
+      color: var(--neon-red);
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 2px;
+    }
+
+    /* JSON AUDIT VIEW */
+    .json-display {
+      background: #020204;
+      border: 2px solid var(--border-bright);
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.5;
+      min-height: 380px;
+      max-height: 520px;
+      overflow-y: auto;
+      color: var(--neon-green);
+    }
+
+    /* Action Bar at bottom of Document */
+    .dock-actions-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-bright);
+    }
+
+    /* ==========================================================================
+       RIGHT MATRIX: RULES ENGINE & FORENSIC FINDINGS FEED
+       ========================================================================== */
+    .rules-matrix-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-bright);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .matrix-header {
+      background: #000000;
+      border-bottom: 2px solid var(--border-bright);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .matrix-header h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+    }
+
+    .rules-list {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Individual Rule Bento */
+    .rule-bento {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      padding: 14px 16px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+    .rule-bento.triggered {
+      border-color: var(--neon-red);
+      box-shadow: 0 0 16px rgba(255, 42, 42, 0.35);
+      background: linear-gradient(90deg, rgba(255, 42, 42, 0.08), var(--bg-card));
+    }
+    .rule-bento.warn-triggered {
+      border-color: var(--neon-yellow);
+      box-shadow: 0 0 16px rgba(255, 230, 0, 0.3);
+      background: linear-gradient(90deg, rgba(255, 230, 0, 0.08), var(--bg-card));
+    }
+    .rule-bento.disabled {
+      opacity: 0.55;
+    }
+
+    .rule-head-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .rule-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rule-name {
+      font-family: var(--font-tech);
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .rule-trigger-pill {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-bright);
+      color: var(--text-muted);
+    }
+    .rule-bento.triggered .rule-trigger-pill {
+      background: var(--neon-red);
+      color: #ffffff;
+      border-color: var(--neon-red);
+    }
+    .rule-bento.warn-triggered .rule-trigger-pill {
+      background: var(--neon-yellow);
+      color: #000000;
+      border-color: var(--neon-yellow);
+    }
+
+    /* Switch Component */
+    .switch-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .switch-input {
+      display: none;
+    }
+    .switch-label {
+      width: 38px;
+      height: 20px;
+      background: #000000;
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .switch-label::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+    }
+    .switch-input:checked + .switch-label {
+      background: rgba(0, 240, 255, 0.2);
+      border-color: var(--neon-cyan);
+    }
+    .switch-input:checked + .switch-label::after {
+      transform: translateX(18px);
+      background: var(--neon-cyan);
+      box-shadow: 0 0 6px var(--neon-cyan);
+    }
+
+    /* Rule Detectors Tag Bar */
+    .detectors-tag-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .det-badge {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 2px;
+      color: #000000;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Rule Controls Row (Threshold & Action) */
+    .rule-controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(0,0,0,0.3);
+      padding: 8px 12px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+    .ctrl-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ctrl-input-num {
+      width: 52px;
+      background: #000000;
+      border: 1px solid var(--border-bright);
+      color: #ffffff;
+      padding: 3px 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-align: center;
+      border-radius: 2px;
+      outline: none;
+    }
+    .ctrl-input-num:focus {
+      border-color: var(--neon-cyan);
+    }
+    .ctrl-select {
+      background: #000000;
+      border: 1px solid var(--border-bright);
+      color: #ffffff;
+      padding: 3px 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+    .ctrl-select:focus {
+      border-color: var(--neon-cyan);
+    }
+
+    /* Custom Regex Studio Section */
+    .custom-regex-box {
+      margin: 10px 20px 20px;
+      background: var(--bg-card);
+      border: 2px dashed var(--border-bright);
+      padding: 16px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .custom-regex-box h4 {
+      font-family: var(--font-display);
+      font-size: 14px;
+      color: var(--neon-yellow);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .custom-input-group {
+      display: flex;
+      gap: 8px;
+    }
+    .custom-input {
+      flex: 1;
+      background: #000000;
+      border: 1px solid var(--border-bright);
+      color: #ffffff;
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      outline: none;
+    }
+    .custom-input:focus {
+      border-color: var(--neon-yellow);
+      box-shadow: 0 0 10px rgba(255, 230, 0, 0.2);
+    }
+    .regex-error-msg {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--neon-red);
+      display: none;
+    }
+
+    /* Checksum Rejections Telemetry Drawer */
+    .rejections-drawer {
+      margin: 0 20px 20px;
+      background: #000000;
+      border: 1px solid var(--border-bright);
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rejections-title {
+      color: var(--neon-cyan);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Findings Feed List */
+    .findings-feed-box {
+      padding: 0 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .feed-header {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+    .finding-item-row {
+      background: var(--bg-card);
+      border-left: 4px solid var(--item-color, var(--neon-cyan));
+      border-right: 1px solid var(--border-bright);
+      border-top: 1px solid var(--border-bright);
+      border-bottom: 1px solid var(--border-bright);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      transition: transform 0.15s ease;
+    }
+    .finding-item-row:hover {
+      transform: translateX(4px);
+      background: var(--bg-card-hover);
+    }
+    .finding-val-masked {
+      color: #ffffff;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .finding-span-meta {
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    /* Toast Notification */
+    .hud-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #000000;
+      border: 2px solid var(--neon-cyan);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 12px 20px;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+      display: none;
+      align-items: center;
+      gap: 10px;
+      z-index: 10000;
+      animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes toastIn {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Print / Lab Viva Stylesheet */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .top-ticker, .header-controls, .preset-bar, .dropzone-overlay, .dock-actions-footer, .custom-regex-box, .switch-wrap {
+        display: none !important;
+      }
+      .telemetry-deck, .workspace-grid {
+        display: block !important;
+      }
+      .dock-card, .rules-matrix-card, .verdict-stamp-box {
+        border: 1px solid #000000 !important;
+        box-shadow: none !important;
+        margin-bottom: 20px !important;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CRT Scanlines Overlay -->
+  <div class="scanlines-overlay" id="scanlinesOverlay"></div>
+
+  <!-- Top Animated Cyber Ticker: Guidance & Team Members (Left-to-Right Animated) -->
+  <div class="top-ticker">
+    <!-- ROW 1: Faculty Guidance & Team Members (Animated Left to Right) -->
+    <div class="ticker-row-faculty">
+      <div class="ticker-track-ltr">
+        <span>⭐ <strong style="color: var(--neon-cyan);">INFORMATION &amp; CYBER SECURITY LAB</strong> // MICRO-PROJECT 06</span>
+        <span class="ticker-tag-mentor">UNDER GUIDANCE OF:</span>
+        <strong style="color: var(--neon-yellow); letter-spacing: 1px;">Asst Prof Mr V Shiva kumar</strong>
+        <span style="color: var(--border-bright); margin: 0 10px;">|</span>
+        <span style="color: var(--neon-pink); font-weight: 800;">MEMBERS:</span>
+        <span class="ticker-tag-member">M. TEJA REDDY (24R01A6636)</span>
+        <span class="ticker-tag-member">M. HRISHIKESH (24R01A6637)</span>
+        <span class="ticker-tag-member">MOHAMMED AMAN (24R01A6638)</span>
+        <span class="ticker-tag-member" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">MOHAMMED JUNADE PASHA (24R01A6639)</span>
+        <span class="ticker-tag-member">MOHAMMED SAIF PATEL (24R01A6640)</span>
+        <span class="ticker-tag-member">M. MAHENDER YADAV (24R01A6641)</span>
+        <span class="ticker-tag-member">M. RITHIKA REDDY (24R01A6642)</span>
+        <span style="color: var(--border-bright); margin: 0 14px;">///</span>
+        <span>⭐ <strong style="color: var(--neon-cyan);">INFORMATION &amp; CYBER SECURITY LAB</strong> // MICRO-PROJECT 06</span>
+        <span class="ticker-tag-mentor">UNDER GUIDANCE OF:</span>
+        <strong style="color: var(--neon-yellow); letter-spacing: 1px;">Asst Prof Mr V Shiva kumar</strong>
+        <span style="color: var(--border-bright); margin: 0 10px;">|</span>
+        <span style="color: var(--neon-pink); font-weight: 800;">MEMBERS:</span>
+        <span class="ticker-tag-member">M. TEJA REDDY (24R01A6636)</span>
+        <span class="ticker-tag-member">M. HRISHIKESH (24R01A6637)</span>
+        <span class="ticker-tag-member">MOHAMMED AMAN (24R01A6638)</span>
+        <span class="ticker-tag-member" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">MOHAMMED JUNADE PASHA (24R01A6639)</span>
+        <span class="ticker-tag-member">MOHAMMED SAIF PATEL (24R01A6640)</span>
+        <span class="ticker-tag-member">M. MAHENDER YADAV (24R01A6641)</span>
+        <span class="ticker-tag-member">M. RITHIKA REDDY (24R01A6642)</span>
+      </div>
+    </div>
+    <!-- ROW 2: System Telemetry Status Ticker -->
+    <div class="ticker-row-system">
+      <div class="ticker-track-rtl">
+        [DLP STATUS: ACTIVE] // 100% CLIENT-SIDE ENCLAVE // ZERO NETWORK EXFILTRATION // VERHOEFF CHECKSUM ONLINE (AADHAAR) // LUHN CHECK ENGINE READY (PCI-DSS) // PAN SYNTAX MONITOR ENGAGED // POLICY RULE ENGINE ARMED // LAB VIVA DEMONSTRATION READY //
+        [DLP STATUS: ACTIVE] // 100% CLIENT-SIDE ENCLAVE // ZERO NETWORK EXFILTRATION // VERHOEFF CHECKSUM ONLINE (AADHAAR) // LUHN CHECK ENGINE READY (PCI-DSS) // PAN SYNTAX MONITOR ENGAGED // POLICY RULE ENGINE ARMED // LAB VIVA DEMONSTRATION READY //
+      </div>
+    </div>
+  </div>
+
+  <div class="app-wrapper">
+
+    <!-- HEADER COMMAND BAR -->
+    <header class="header-bar">
+      <div class="brand-title-wrap">
+        <h1>
+          <span>⚡</span>
+          <span class="glitch-text">REDACT</span>
+          <span style="font-size: 18px; color: var(--neon-pink); font-family: var(--font-mono); font-weight: 700;">// MINI DLP</span>
+        </h1>
+        <p>
+          <span class="pulse-dot"></span>
+          <span>ICS Lab MP-06</span>
+          <span style="color: var(--border-bright);">|</span>
+          <span style="color: var(--neon-yellow);">Guide: Asst Prof Mr V Shiva kumar</span>
+          <span style="color: var(--border-bright);">|</span>
+          <span style="color: var(--neon-cyan);">Team: M. Teja Reddy, M. Hrishikesh, Mohammed Aman, Mohammed Junade Pasha, Mohammed Saif Patel, M. Mahender Yadav, M. Rithika Reddy</span>
+        </p>
+      </div>
+
+      <div class="header-controls">
+        <div id="backendStatusPill" class="hud-btn" style="border-color: var(--neon-cyan); color: var(--neon-cyan); cursor: default;" title="Backend REST API Status">
+          <span class="pulse-dot" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></span> BACKEND: CHECKING...
+        </div>
+        <button class="hud-btn" id="audioToggleBtn" title="Toggle Synthesized Audio Cues">
+          <span id="audioIcon">🔊</span> AUDIO: <span id="audioStateTxt">ON</span>
+        </button>
+        <button class="hud-btn" id="scanlineToggleBtn" title="Toggle CRT Scanline Effect">
+          <span>📺</span> CRT FX
+        </button>
+        <button class="hud-btn" id="themeToggleBtn" title="Switch Theme">
+          <span id="themeIcon">☀️</span> THEME
+        </button>
+        <button class="hud-btn" id="printReportBtn" title="Print Security Audit Sheet for Lab Evaluation">
+          <span>🖨️</span> LAB REPORT
+        </button>
+      </div>
+    </header>
+
+    <!-- PROJECT TITLE SHOWCASE (LAB TITLE DISPLAY) -->
+    <section class="project-title-showcase">
+      <div class="showcase-header-tagline">
+        <div>
+          <span>🛡️ INFORMATION AND CYBER SECURITY LAB</span>
+          <span style="color: var(--border-bright); margin: 0 8px;">//</span>
+          <span style="color: var(--neon-yellow); font-weight: 800;">MICRO-PROJECT 06</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <span style="background: rgba(0, 240, 255, 0.15); border: 1px solid var(--neon-cyan); padding: 2px 8px; border-radius: 2px; font-size: 10px;">DLP POLICY MODEL</span>
+          <span style="background: rgba(57, 255, 20, 0.15); border: 1px solid var(--neon-green); padding: 2px 8px; border-radius: 2px; font-size: 10px; color: var(--neon-green);">VERHOEFF &amp; LUHN</span>
+        </div>
+      </div>
+
+      <div class="showcase-main-title">
+        <span style="color: var(--neon-pink); font-size: 20px;">TITLE:</span>
+        <span class="title-highlight-quote">“Use detectors within a rule to identify sensitive content”</span>
+        <span class="title-sub-descriptor">// Browser-Isolated Mini Data Loss Prevention (DLP) System</span>
+      </div>
+
+      <div class="showcase-pipeline-chips">
+        <div class="pipe-step-chip" style="border-color: var(--neon-pink);">
+          <span style="color: var(--neon-pink);">[01] DETECTORS</span>
+          <span style="color: var(--text-muted); font-size: 10px;">(Aadhaar, Card, PAN, Pwd, Email, Phone, RegEx)</span>
+        </div>
+        <span class="pipe-arrow">➔</span>
+        <div class="pipe-step-chip" style="border-color: var(--neon-cyan);">
+          <span style="color: var(--neon-cyan);">[02] PRIORITY MATRIX</span>
+          <span style="color: var(--text-muted); font-size: 10px;">(Overlap Resolution: D1 &gt; D2 &gt; ... &gt; D7)</span>
+        </div>
+        <span class="pipe-arrow">➔</span>
+        <div class="pipe-step-chip" style="border-color: var(--neon-yellow);">
+          <span style="color: var(--neon-yellow);">[03] POLICY RULES</span>
+          <span style="color: var(--text-muted); font-size: 10px;">(Threshold Counter &ge; Policy Activation)</span>
+        </div>
+        <span class="pipe-arrow">➔</span>
+        <div class="pipe-step-chip" style="border-color: var(--neon-green);">
+          <span style="color: var(--neon-green);">[04] ENFORCEMENT VERDICT</span>
+          <span style="color: var(--text-muted); font-size: 10px;">(BLOCK / WARN / LOG / REDACT)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TELEMETRY DECK: VERDICT STAMP + METRICS BENTO + RISK GAUGE -->
+    <section class="telemetry-deck">
+      
+      <!-- Verdict Rubber Stamp -->
+      <div class="verdict-stamp-box" id="verdictBox">
+        <div class="stamp-label">OVERALL POLICY VERDICT</div>
+        <div class="stamp-badge CLEAN" id="verdictBadge">CLEAN</div>
+        <div class="stamp-meta" id="verdictSubtext">No policy thresholds violated. Document unclassified.</div>
+      </div>
+
+      <!-- Counters Bento -->
+      <div class="counters-bento">
+        <div class="counter-card" style="--accent-bar: var(--neon-cyan);">
+          <div class="label">Document Chars</div>
+          <div class="value" id="charCountDisplay">0</div>
+          <div class="subtext">200K Safe Limit</div>
+        </div>
+        <div class="counter-card" style="--accent-bar: var(--neon-pink);">
+          <div class="label">Findings Detected</div>
+          <div class="value" id="findingsCountDisplay">0</div>
+          <div class="subtext">D1 - D7 Overlap-Resolved</div>
+        </div>
+        <div class="counter-card" style="--accent-bar: var(--neon-yellow);">
+          <div class="label">Rules Triggered</div>
+          <div class="value" id="rulesTriggeredDisplay">0/5</div>
+          <div class="subtext">Threshold Exceeded</div>
+        </div>
+        <div class="counter-card" style="--accent-bar: var(--neon-green);">
+          <div class="label">Checksum Rejections</div>
+          <div class="value" id="rejectedCountDisplay">0</div>
+          <div class="subtext">False Positives Suppressed</div>
+        </div>
+      </div>
+
+      <!-- Risk Meter Gauge -->
+      <div class="risk-gauge-box">
+        <div class="gauge-circle-wrap">
+          <svg viewBox="0 0 100 100">
+            <circle class="gauge-bg" cx="50" cy="50" r="42"></circle>
+            <circle class="gauge-val" id="gaugeValCircle" cx="50" cy="50" r="42"></circle>
+          </svg>
+          <div class="gauge-score-display" id="gaugeScoreText">0</div>
+        </div>
+        <div class="risk-info-wrap">
+          <div class="risk-title">THREAT RISK INDEX</div>
+          <div class="risk-level" id="riskLevelText">SECURE</div>
+          <div class="risk-desc" id="riskFormulaDesc">Weighted formula: Base weight (BLOCK: 30, WARN: 12, LOG: 4) + matches.</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- MAIN WORKSPACE GRID -->
+    <main class="workspace-grid">
+
+      <!-- LEFT: DOCUMENT CONSOLE (4 TABS) -->
+      <div class="dock-card">
+        
+        <!-- Tabs Header -->
+        <div class="dock-tabs">
+          <button class="tab-btn active" data-tab="tab-editor">
+            <span>01 // INPUT EDITOR</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-findings">
+            <span>02 // FINDINGS INSPECTOR</span>
+            <span class="tab-badge" id="tabBadgeFindings">0</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-redacted">
+            <span>03 // CLASSIFIED REDACTION</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-audit">
+            <span>04 // JSON TELEMETRY</span>
+          </button>
+        </div>
+
+        <!-- Preset Triggers Bar (Quick Demos for Faculty Evaluation) -->
+        <div class="preset-bar">
+          <span class="preset-title">Faculty Demo Presets:</span>
+          <button class="preset-chip" onclick="loadSamplePreset('test1')">🧪 Test 1: Aadhaar Verhoeff</button>
+          <button class="preset-chip" onclick="loadSamplePreset('test2')">💳 Test 2: Card Luhn</button>
+          <button class="preset-chip" onclick="loadSamplePreset('test3')">🔑 Test 3: PAN &amp; Passwords</button>
+          <button class="preset-chip" onclick="loadSamplePreset('test4')">👥 Test 4: Bulk Directory</button>
+          <button class="preset-chip" onclick="loadSamplePreset('test5')">🏷️ Test 5: Custom Badges</button>
+          <button class="preset-chip" onclick="loadSamplePreset('test6')">🛡️ Test 6: Clean Document</button>
+          <button class="preset-chip" style="margin-left: auto; color: var(--neon-red);" onclick="clearEditor()">✕ CLEAR</button>
+        </div>
+
+        <!-- Tab 1: Input Editor -->
+        <div class="dock-content" id="tab-editor">
+          <div class="editor-wrapper">
+            <textarea 
+              class="code-textarea" 
+              id="rawInputText" 
+              placeholder="Paste raw text, logs, CSV data, chat exports or drop a file here to initiate real-time DLP scanning..."
+              spellcheck="false"
+            ></textarea>
+
+            <div class="dropzone-overlay" id="dropzoneOverlay">
+              <span>📂</span> Drop text file here (.txt, .csv, .log, .json, .md) or click to browse
+              <input type="file" id="fileInput" accept=".txt,.csv,.log,.json,.md" style="display: none;">
+            </div>
+
+            <div class="editor-footer-status">
+              <div>
+                <span>Character Count: </span>
+                <strong id="charCountSpan" style="color: #ffffff;">0</strong> / 200,000
+                <div class="char-limit-bar">
+                  <div class="char-limit-fill" id="charLimitFill"></div>
+                </div>
+              </div>
+              <div id="scanLatencySpan">Latency: ~0.4ms (Instant)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Findings Inspector -->
+        <div class="dock-content" id="tab-findings" style="display: none;">
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">
+            Visual syntax highlight map with overlap elimination (High priority wins):
+          </div>
+          <div class="findings-display" id="findingsHighlightBox">No text loaded yet.</div>
+        </div>
+
+        <!-- Tab 3: Redacted View -->
+        <div class="dock-content" id="tab-redacted" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
+              Sanitized document copy with sensitive tokens expunged:
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="hud-btn" id="toggleRedactModeBtn" style="padding: 4px 10px; font-size: 11px;">
+                MODE: <span id="redactModeTxt">BLACKOUT BARS (███)</span>
+              </button>
+            </div>
+          </div>
+          <div class="redacted-display" id="redactedTextBox">No text to redact.</div>
+        </div>
+
+        <!-- Tab 4: JSON Audit Telemetry -->
+        <div class="dock-content" id="tab-audit" style="display: none;">
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">
+            Full structured machine-readable security telemetry export:
+          </div>
+          <pre class="json-display" id="jsonAuditBox">{}</pre>
+        </div>
+
+        <!-- Dock Actions Footer -->
+        <div class="dock-actions-footer">
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="hud-btn" id="copyRedactedBtn">
+              <span>📋</span> COPY REDACTED TEXT
+            </button>
+            <button class="hud-btn" id="downloadRedactedBtn">
+              <span>💾</span> DOWNLOAD REDACTED (.TXT)
+            </button>
+            <button class="hud-btn" id="copyJsonBtn">
+              <span>⚡</span> EXPORT JSON REPORT
+            </button>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
+            Engine: Verhoeff 10x10 + Luhn Mod10
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: POLICY RULE MATRIX & DETECTOR CONTROLS -->
+      <div class="rules-matrix-card">
+
+        <div class="matrix-header">
+          <h3>
+            <span>⚙️</span>
+            <span>DLP POLICY ENGINE</span>
+          </h3>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan);">
+            LIVE THRESHOLD TUNING
+          </span>
+        </div>
+
+        <!-- Policy Rules List -->
+        <div class="rules-list" id="rulesListContainer">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Custom Regex Studio (D7 / R5) -->
+        <div class="custom-regex-box">
+          <h4>
+            <span>🔬</span>
+            <span>CUSTOM DETECTOR STUDIO (D7)</span>
+          </h4>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">
+            Define arbitrary regex patterns (e.g., Staff Badges <code>EMP-\d{5}</code>, API Keys, Org IDs).
+          </div>
+          <div class="custom-input-group">
+            <input 
+              type="text" 
+              class="custom-input" 
+              id="customRegexInput" 
+              placeholder="Enter Custom RegEx pattern (e.g. EMP-\d{5})"
+              value="EMP-\d{5}"
+            >
+            <button class="hud-btn" id="applyCustomRegexBtn" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">
+              APPLY REGEX
+            </button>
+          </div>
+          <div class="regex-error-msg" id="regexErrorMsg">Invalid Regular Expression syntax.</div>
+        </div>
+
+        <!-- Checksum Rejection Radar -->
+        <div class="rejections-drawer">
+          <div class="rejections-title">
+            <span>🛡️ CHECKSUM INTEGRITY RADAR</span>
+            <span id="rejectionsTotalBadge" style="color: var(--neon-yellow);">0 REJECTED</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+            <span>Aadhaar Verhoeff Rejections:</span>
+            <strong id="rejAadhaarCount" style="color: #ffffff;">0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+            <span>Credit Card Luhn Rejections:</span>
+            <strong id="rejCardCount" style="color: #ffffff;">0</strong>
+          </div>
+          <div style="color: var(--text-dim); font-size: 10px; margin-top: 4px;">
+            Prevents false alarms on random 12-digit or 16-digit serial numbers.
+          </div>
+        </div>
+
+        <!-- Forensic Findings Feed -->
+        <div class="findings-feed-box">
+          <div class="feed-header">
+            <span>Active Findings Stream</span>
+            <span id="feedCountSpan">0 Items</span>
+          </div>
+          <div id="findingsStreamContainer" style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="color: var(--text-dim); font-family: var(--font-mono); font-size: 11px; padding: 10px; text-align: center;">
+              No sensitive findings currently identified.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- HUD Toast Notification -->
+  <div class="hud-toast" id="hudToast">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Action executed successfully</span>
+  </div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT SCANNER LOGIC, ALGORITHMS & UI INTERACTIVITY
+       ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       1. VERHOEFF & LUHN VALIDATION ALGORITHMS
+       ========================================================================== */
+    const VERHOEFF_D = [
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
+      [2, 3, 4, 0, 1, 7, 8, 9, 5, 6],
+      [3, 4, 0, 1, 2, 8, 9, 5, 6, 7],
+      [4, 0, 1, 2, 3, 9, 5, 6, 7, 8],
+      [5, 9, 8, 7, 6, 0, 4, 3, 2, 1],
+      [6, 5, 9, 8, 7, 1, 0, 4, 3, 2],
+      [7, 6, 5, 9, 8, 2, 1, 0, 4, 3],
+      [8, 7, 6, 5, 9, 3, 2, 1, 0, 4],
+      [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+    ];
+
+    const VERHOEFF_P = [
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 5, 7, 6, 2, 8, 3, 0, 9, 4],
+      [5, 8, 0, 3, 7, 9, 6, 1, 4, 2],
+      [8, 9, 1, 6, 0, 4, 3, 5, 2, 7],
+      [9, 4, 5, 3, 1, 2, 6, 8, 7, 0],
+      [4, 2, 8, 6, 5, 7, 3, 9, 0, 1],
+      [2, 7, 9, 3, 8, 0, 6, 4, 1, 5],
+      [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]
+    ];
+
+    function validateVerhoeff(numStr) {
+      const digits = numStr.replace(/\D/g, '').split('').map(Number);
+      if (digits.length !== 12) return false;
+      let c = 0;
+      const rev = [...digits].reverse();
+      for (let i = 0; i < rev.length; i++) {
+        c = VERHOEFF_D[c][VERHOEFF_P[i % 8][rev[i]]];
+      }
+      return c === 0;
+    }
+
+    function validateLuhn(numStr) {
+      const digits = numStr.replace(/\D/g, '').split('').map(Number);
+      if (digits.length < 13 || digits.length > 19) return false;
+      let sum = 0;
+      const rev = [...digits].reverse();
+      for (let i = 0; i < rev.length; i++) {
+        let d = rev[i];
+        if (i % 2 === 1) {
+          d *= 2;
+          if (d > 9) d -= 9;
+        }
+        sum += d;
+      }
+      return sum % 10 === 0;
+    }
+
+    function maskValue(val) {
+      const clean = val.trim();
+      if (clean.length <= 4) return '****';
+      return clean.slice(0, 2) + '*'.repeat(clean.length - 4) + clean.slice(-2);
+    }
+
+    /* ==========================================================================
+       2. DETECTORS & RULES CONFIGURATION
+       ========================================================================== */
+    const DETECTORS_CONFIG = [
+      {
+        id: "D1",
+        name: "Aadhaar",
+        tag: "AADHAAR",
+        regex: /\b[2-9]\d{3}[-\s]?\d{4}[-\s]?\d{4}\b/g,
+        validator: "verhoeff",
+        priority: 1,
+        color: "#FF007A"
+      },
+      {
+        id: "D2",
+        name: "Credit card",
+        tag: "CARD",
+        regex: /\b(?:\d[ -]?){13,19}\b/g,
+        validator: "luhn",
+        priority: 2,
+        color: "#00F0FF"
+      },
+      {
+        id: "D3",
+        name: "PAN",
+        tag: "PAN",
+        regex: /\b[A-Z]{5}[0-9]{4}[A-Z]\b/g,
+        validator: null,
+        priority: 3,
+        color: "#FFE600"
+      },
+      {
+        id: "D4",
+        name: "Password",
+        tag: "PASSWORD",
+        regex: /\b(?:password|passwd|pwd)\s*[:=]\s*([^\s,;]+)/gi,
+        validator: null,
+        priority: 4,
+        color: "#FF2A2A"
+      },
+      {
+        id: "D5",
+        name: "Email",
+        tag: "EMAIL",
+        regex: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g,
+        validator: null,
+        priority: 5,
+        color: "#39FF14"
+      },
+      {
+        id: "D6",
+        name: "Indian phone",
+        tag: "PHONE",
+        regex: /\b(?:\+91[-\s]?|0)?[6-9]\d{9}\b/g,
+        validator: null,
+        priority: 6,
+        color: "#B026FF"
+      },
+      {
+        id: "D7",
+        name: "Custom detector",
+        tag: "CUSTOM",
+        regex: /EMP-\d{5}/g,
+        validator: null,
+        priority: 7,
+        color: "#FF7700"
+      }
+    ];
+
+    let RULES = [
+      {
+        id: "R1",
+        name: "Government ID leak",
+        detectorIds: ["D1", "D3"],
+        threshold: 1,
+        action: "BLOCK",
+        enabled: true
+      },
+      {
+        id: "R2",
+        name: "Payment data",
+        detectorIds: ["D2"],
+        threshold: 1,
+        action: "BLOCK",
+        enabled: true
+      },
+      {
+        id: "R3",
+        name: "Credentials",
+        detectorIds: ["D4"],
+        threshold: 1,
+        action: "BLOCK",
+        enabled: true
+      },
+      {
+        id: "R4",
+        name: "Bulk personal data",
+        detectorIds: ["D5", "D6"],
+        threshold: 5,
+        action: "WARN",
+        enabled: true
+      },
+      {
+        id: "R5",
+        name: "Custom keyword rule",
+        detectorIds: ["D7"],
+        threshold: 1,
+        action: "WARN",
+        enabled: true
+      }
+    ];
+
+    /* ==========================================================================
+       3. AUDIO SYNTHESIZER (WEB AUDIO API)
+       ========================================================================== */
+    let audioContext = null;
+    let audioEnabled = true;
+
+    function initAudio() {
+      if (!audioContext) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) audioContext = new AudioCtx();
+      }
+    }
+
+    function playTone(freq, type, duration, delay = 0) {
+      if (!audioEnabled) return;
+      initAudio();
+      if (!audioContext) return;
+      
+      setTimeout(() => {
+        try {
+          const osc = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+          gain.gain.setValueAtTime(0.08, audioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(audioContext.destination);
+          osc.start();
+          osc.stop(audioContext.currentTime + duration);
+        } catch (e) {}
+      }, delay);
+    }
+
+    function playSoundAlert(verdict) {
+      if (!audioEnabled) return;
+      if (verdict === 'BLOCK') {
+        playTone(180, 'sawtooth', 0.2, 0);
+        playTone(140, 'sawtooth', 0.35, 180);
+      } else if (verdict === 'WARN') {
+        playTone(440, 'sine', 0.15, 0);
+        playTone(330, 'sine', 0.2, 120);
+      } else if (verdict === 'CLEAN') {
+        playTone(523.25, 'triangle', 0.12, 0);
+        playTone(659.25, 'triangle', 0.18, 90);
+      } else {
+        playTone(400, 'sine', 0.08, 0);
+      }
+    }
+
+    /* ==========================================================================
+       4. SCANNER CORE ENGINE
+       ========================================================================== */
+    let currentScanResult = null;
+    let redactMode = 'blackout'; // 'blackout' or 'tagged'
+
+    function executeScan(text) {
+      const startTime = performance.now();
+      const rawCandidates = [];
+      const rejected = {
+        verhoeff: 0,
+        luhn: 0,
+        details: []
+      };
+
+      // 1. Run all detectors
+      for (const det of DETECTORS_CONFIG) {
+        if (!det.regex) continue;
+        det.regex.lastIndex = 0; // reset RegExp index
+        
+        let match;
+        while ((match = det.regex.exec(text)) !== null) {
+          const matchedText = match[0];
+          const startIdx = match.index;
+          const endIdx = startIdx + matchedText.length;
+
+          let isValid = true;
+          if (det.validator === 'verhoeff') {
+            const digits = matchedText.replace(/\D/g, '');
+            if (digits.length === 12 && validateVerhoeff(digits)) {
+              isValid = true;
+            } else {
+              isValid = false;
+              rejected.verhoeff++;
+              rejected.details.push({
+                detector: "Aadhaar",
+                reason: "Failed Verhoeff checksum",
+                value: maskValue(matchedText),
+                span: [startIdx, endIdx]
+              });
+            }
+          } else if (det.validator === 'luhn') {
+            const digits = matchedText.replace(/\D/g, '');
+            if (digits.length >= 13 && digits.length <= 19 && validateLuhn(digits)) {
+              isValid = true;
+            } else {
+              isValid = false;
+              rejected.luhn++;
+              rejected.details.push({
+                detector: "Credit card",
+                reason: "Failed Luhn checksum",
+                value: maskValue(matchedText),
+                span: [startIdx, endIdx]
+              });
+            }
+          }
+
+          if (isValid) {
+            rawCandidates.push({
+              detectorId: det.id,
+              detectorName: det.name,
+              tag: det.tag,
+              priority: det.priority,
+              color: det.color,
+              value: matchedText,
+              masked: maskValue(matchedText),
+              start: startIdx,
+              end: endIdx
+            });
+          }
+        }
+      }
+
+      // 2. Overlap Resolution: Earlier detector in priority wins (PRD 6.1)
+      rawCandidates.sort((a, b) => {
+        if (a.start !== b.start) return a.start - b.start;
+        if (a.priority !== b.priority) return a.priority - b.priority;
+        return (b.end - b.start) - (a.end - a.start);
+      });
+
+      const resolvedFindings = [];
+      for (const candidate of rawCandidates) {
+        let overlap = false;
+        for (const existing of resolvedFindings) {
+          if (Math.max(candidate.start, existing.start) < Math.min(candidate.end, existing.end)) {
+            overlap = true;
+            break;
+          }
+        }
+        if (!overlap) {
+          resolvedFindings.push(candidate);
+        }
+      }
+
+      resolvedFindings.sort((a, b) => a.start - b.start);
+
+      // 3. Rule Evaluation
+      const detectorCounts = {};
+      for (const f of resolvedFindings) {
+        detectorCounts[f.detectorId] = (detectorCounts[f.detectorId] || 0) + 1;
+      }
+
+      const actionRanks = { CLEAN: 0, LOG: 1, WARN: 2, BLOCK: 3 };
+      const rankToVerdict = ["CLEAN", "LOG", "WARNING", "BLOCKED"];
+      const actionWeights = { BLOCK: 30, WARN: 12, LOG: 4 };
+
+      let maxRank = 0;
+      let totalRisk = 0;
+      const triggeredRules = [];
+      const evaluatedRules = [];
+
+      for (const rule of RULES) {
+        if (!rule.enabled) {
+          evaluatedRules.push({
+            ...rule,
+            matchCount: 0,
+            triggered: false,
+            status: "DISABLED"
+          });
+          continue;
+        }
+
+        let matchCount = 0;
+        for (const dId of rule.detectorIds) {
+          matchCount += (detectorCounts[dId] || 0);
+        }
+
+        const isTriggered = matchCount >= rule.threshold && matchCount > 0;
+        const ruleInfo = {
+          ...rule,
+          matchCount,
+          triggered: isTriggered,
+          status: isTriggered ? "TRIGGERED" : "PASS"
+        };
+        evaluatedRules.push(ruleInfo);
+
+        if (isTriggered) {
+          triggeredRules.push(ruleInfo);
+          const act = rule.action.toUpperCase();
+          const baseW = actionWeights[act] || 0;
+          totalRisk += (baseW + (Math.min(matchCount, 5) * 3));
+
+          const rank = actionRanks[act] || 0;
+          if (rank > maxRank) maxRank = rank;
+        }
+      }
+
+      totalRisk = Math.min(100, totalRisk);
+      const verdict = rankToVerdict[maxRank];
+      const endTime = performance.now();
+      const latencyMs = (endTime - startTime).toFixed(2);
+
+      // 4. Generate Redactions
+      let blackoutText = text;
+      let taggedParts = [];
+      let lastIdx = 0;
+      const blackoutArr = text.split('');
+
+      for (const f of resolvedFindings) {
+        for (let i = f.start; i < f.end; i++) {
+          blackoutArr[i] = '█';
+        }
+        taggedParts.push(text.substring(lastIdx, f.start));
+        taggedParts.push(`[${f.tag} REDACTED]`);
+        lastIdx = f.end;
+      }
+      taggedParts.push(text.substring(lastIdx));
+
+      currentScanResult = {
+        verdict,
+        riskScore: totalRisk,
+        findingsCount: resolvedFindings.length,
+        findings: resolvedFindings,
+        rulesEvaluated: evaluatedRules,
+        triggeredRules,
+        rejections: {
+          total: rejected.verhoeff + rejected.luhn,
+          verhoeff: rejected.verhoeff,
+          luhn: rejected.luhn,
+          details: rejected.details
+        },
+        redactedBlackout: blackoutArr.join(''),
+        redactedTagged: taggedParts.join(''),
+        textLength: text.length,
+        latencyMs
+      };
+
+      return currentScanResult;
+    }
+
+    /* ==========================================================================
+       5. UI RENDERERS
+       ========================================================================== */
+    function renderUI(result, text) {
+      // 1. Verdict Stamp
+      const verdictBadge = document.getElementById('verdictBadge');
+      const verdictBox = document.getElementById('verdictBox');
+      const verdictSubtext = document.getElementById('verdictSubtext');
+
+      verdictBadge.className = `stamp-badge ${result.verdict}`;
+      verdictBadge.textContent = result.verdict;
+
+      if (result.verdict === 'BLOCKED') {
+        verdictSubtext.textContent = `CRITICAL: ${result.triggeredRules.length} policy rules triggered high-impact block. Data transmission halted.`;
+        verdictBox.style.setProperty('--verdict-color', 'var(--neon-red)');
+      } else if (result.verdict === 'WARNING') {
+        verdictSubtext.textContent = `CAUTION: Potential sensitive exposure flagged. Review required before release.`;
+        verdictBox.style.setProperty('--verdict-color', 'var(--neon-yellow)');
+      } else if (result.verdict === 'LOG') {
+        verdictSubtext.textContent = `LOGGED: Sensitive identifiers recorded for security audit.`;
+        verdictBox.style.setProperty('--verdict-color', 'var(--neon-cyan)');
+      } else {
+        verdictSubtext.textContent = `No policy thresholds violated. Document unclassified.`;
+        verdictBox.style.setProperty('--verdict-color', 'var(--neon-green)');
+      }
+
+      // 2. Bento Counters
+      document.getElementById('charCountDisplay').textContent = result.textLength.toLocaleString();
+      document.getElementById('charCountSpan').textContent = result.textLength.toLocaleString();
+      document.getElementById('findingsCountDisplay').textContent = result.findingsCount;
+      document.getElementById('tabBadgeFindings').textContent = result.findingsCount;
+      document.getElementById('rulesTriggeredDisplay').textContent = `${result.triggeredRules.length}/${RULES.filter(r => r.enabled).length}`;
+      document.getElementById('rejectedCountDisplay').textContent = result.rejections.total;
+      document.getElementById('scanLatencySpan').textContent = `Scan Latency: ~${result.latencyMs}ms`;
+
+      // Char length progress bar (up to 200,000)
+      const charPercent = Math.min(100, (result.textLength / 200000) * 100);
+      const fillBar = document.getElementById('charLimitFill');
+      fillBar.style.width = `${charPercent}%`;
+      fillBar.className = 'char-limit-fill' + (charPercent > 80 ? ' danger' : charPercent > 50 ? ' warn' : '');
+
+      // 3. Risk Gauge Meter
+      const gaugeCircle = document.getElementById('gaugeValCircle');
+      const scoreText = document.getElementById('gaugeScoreText');
+      const riskLevel = document.getElementById('riskLevelText');
+
+      scoreText.textContent = result.riskScore;
+      // 264 is perimeter approx (2 * PI * 42 = 263.89)
+      const dashOffset = 264 - (264 * (result.riskScore / 100));
+      gaugeCircle.style.strokeDashoffset = dashOffset;
+
+      let gaugeColor = 'var(--neon-green)';
+      let levelLabel = 'SECURE';
+      if (result.riskScore >= 60) {
+        gaugeColor = 'var(--neon-red)';
+        levelLabel = 'CRITICAL';
+      } else if (result.riskScore >= 25) {
+        gaugeColor = 'var(--neon-yellow)';
+        levelLabel = 'ELEVATED';
+      } else if (result.riskScore > 0) {
+        gaugeColor = 'var(--neon-cyan)';
+        levelLabel = 'LOW';
+      }
+      gaugeCircle.style.setProperty('--gauge-color', gaugeColor);
+      riskLevel.style.setProperty('--gauge-color', gaugeColor);
+      riskLevel.textContent = levelLabel;
+
+      // 4. Rejections Radar
+      document.getElementById('rejectionsTotalBadge').textContent = `${result.rejections.total} REJECTED`;
+      document.getElementById('rejAadhaarCount').textContent = result.rejections.verhoeff;
+      document.getElementById('rejCardCount').textContent = result.rejections.luhn;
+
+      // 5. Findings Highlight Display (Tab 2)
+      renderFindingsHighlight(text, result.findings);
+
+      // 6. Redacted Display (Tab 3)
+      renderRedactedView(result);
+
+      // 7. JSON Telemetry Display (Tab 4)
+      document.getElementById('jsonAuditBox').textContent = JSON.stringify(result, null, 2);
+
+      // 8. Stream Feed
+      renderFindingsFeed(result.findings);
+
+      // 9. Rules Matrix Update
+      renderRulesMatrix(result.rulesEvaluated);
+    }
+
+    function renderFindingsHighlight(text, findings) {
+      const container = document.getElementById('findingsHighlightBox');
+      if (!text) {
+        container.textContent = "No document text supplied.";
+        return;
+      }
+      if (findings.length === 0) {
+        container.textContent = text;
+        return;
+      }
+
+      container.innerHTML = '';
+      let lastIdx = 0;
+
+      findings.forEach(f => {
+        // Plain text segment before finding
+        if (f.start > lastIdx) {
+          container.appendChild(document.createTextNode(text.substring(lastIdx, f.start)));
+        }
+
+        // Highlight element
+        const span = document.createElement('span');
+        span.className = 'match-highlight';
+        span.style.backgroundColor = f.color;
+        span.setAttribute('data-tag', f.tag);
+        span.title = `${f.detectorName}: ${f.masked} [Span: ${f.start}-${f.end}]`;
+        span.textContent = f.value;
+        span.onclick = () => showToast(`Finding: ${f.detectorName} (${f.masked})`);
+        container.appendChild(span);
+
+        lastIdx = f.end;
+      });
+
+      if (lastIdx < text.length) {
+        container.appendChild(document.createTextNode(text.substring(lastIdx)));
+      }
+    }
+
+    function renderRedactedView(result) {
+      const container = document.getElementById('redactedTextBox');
+      if (redactMode === 'blackout') {
+        container.textContent = result.redactedBlackout || "No text to redact.";
+      } else {
+        container.textContent = result.redactedTagged || "No text to redact.";
+      }
+    }
+
+    function renderFindingsFeed(findings) {
+      const container = document.getElementById('findingsStreamContainer');
+      document.getElementById('feedCountSpan').textContent = `${findings.length} Items`;
+      
+      if (findings.length === 0) {
+        container.innerHTML = `<div style="color: var(--text-dim); font-family: var(--font-mono); font-size: 11px; padding: 10px; text-align: center;">No sensitive findings currently identified.</div>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      findings.forEach((f, idx) => {
+        const row = document.createElement('div');
+        row.className = 'finding-item-row';
+        row.style.setProperty('--item-color', f.color);
+        row.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="det-badge" style="background: ${f.color}; font-size: 9px;">${f.tag}</span>
+            <span class="finding-val-masked">${f.masked}</span>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 10px; color: var(--text-muted);">${f.detectorName}</div>
+            <div class="finding-span-meta">[${f.start}:${f.end}]</div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function renderRulesMatrix(evaluatedRules) {
+      const container = document.getElementById('rulesListContainer');
+      container.innerHTML = '';
+
+      evaluatedRules.forEach(rule => {
+        const bento = document.createElement('div');
+        let triggerClass = '';
+        if (rule.triggered) {
+          triggerClass = rule.action === 'BLOCK' ? 'triggered' : 'warn-triggered';
+        }
+        bento.className = `rule-bento ${triggerClass} ${!rule.enabled ? 'disabled' : ''}`;
+
+        // Get detector names
+        const detBadges = rule.detectorIds.map(dId => {
+          const det = DETECTORS_CONFIG.find(d => d.id === dId);
+          return `<span class="det-badge" style="background: ${det ? det.color : '#888'};">${det ? det.name : dId}</span>`;
+        }).join('');
+
+        bento.innerHTML = `
+          <div class="rule-head-row">
+            <div class="rule-title-group">
+              <span class="rule-name">${rule.name}</span>
+              <span class="rule-trigger-pill">${rule.status} (${rule.matchCount || 0})</span>
+            </div>
+            <div class="switch-wrap">
+              <input type="checkbox" id="ruleSwitch_${rule.id}" class="switch-input" ${rule.enabled ? 'checked' : ''} onchange="toggleRule('${rule.id}')">
+              <label for="ruleSwitch_${rule.id}" class="switch-label" title="Enable or Disable Rule"></label>
+            </div>
+          </div>
+
+          <div class="detectors-tag-bar">
+            ${detBadges}
+          </div>
+
+          <div class="rule-controls-row">
+            <div class="ctrl-item">
+              <span style="color: var(--text-muted);">Threshold:</span>
+              <input type="number" min="1" max="99" value="${rule.threshold}" class="ctrl-input-num" onchange="updateRuleThreshold('${rule.id}', this.value)">
+            </div>
+            <div class="ctrl-item">
+              <span style="color: var(--text-muted);">Action:</span>
+              <select class="ctrl-select" onchange="updateRuleAction('${rule.id}', this.value)">
+                <option value="BLOCK" ${rule.action === 'BLOCK' ? 'selected' : ''}>BLOCK</option>
+                <option value="WARN" ${rule.action === 'WARN' ? 'selected' : ''}>WARN</option>
+                <option value="LOG" ${rule.action === 'LOG' ? 'selected' : ''}>LOG</option>
+              </select>
+            </div>
+          </div>
+        `;
+        container.appendChild(bento);
+      });
+    }
+
+    /* ==========================================================================
+       6. INTERACTIVE CONTROLS & EVENT HANDLERS
+       ========================================================================== */
+    const textarea = document.getElementById('rawInputText');
+
+    function triggerScanNow(playSound = false) {
+      let text = textarea.value;
+      if (text.length > 200000) {
+        text = text.substring(0, 200000);
+        showToast("⚠️ Input truncated to 200,000 character limit.");
+      }
+      const prevVerdict = currentScanResult ? currentScanResult.verdict : null;
+      const res = executeScan(text);
+      renderUI(res, text);
+
+      if (playSound || (prevVerdict && prevVerdict !== res.verdict)) {
+        playSoundAlert(res.verdict);
+      }
+    }
+
+    textarea.addEventListener('input', () => {
+      triggerScanNow(false);
+    });
+
+    // Rule Toggles & Updates
+    function toggleRule(ruleId) {
+      const rule = RULES.find(r => r.id === ruleId);
+      if (rule) {
+        rule.enabled = !rule.enabled;
+        triggerScanNow(true);
+        showToast(`Rule "${rule.name}" is now ${rule.enabled ? 'ENABLED' : 'DISABLED'}`);
+      }
+    }
+
+    function updateRuleThreshold(ruleId, val) {
+      const rule = RULES.find(r => r.id === ruleId);
+      if (rule) {
+        rule.threshold = Math.max(1, parseInt(val) || 1);
+        triggerScanNow(true);
+        showToast(`Rule "${rule.name}" threshold set to ${rule.threshold}`);
+      }
+    }
+
+    function updateRuleAction(ruleId, val) {
+      const rule = RULES.find(r => r.id === ruleId);
+      if (rule) {
+        rule.action = val;
+        triggerScanNow(true);
+        showToast(`Rule "${rule.name}" action set to ${rule.action}`);
+      }
+    }
+
+    // Tabs Switcher
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const targetId = btn.getAttribute('data-tab');
+        
+        ['tab-editor', 'tab-findings', 'tab-redacted', 'tab-audit'].forEach(id => {
+          document.getElementById(id).style.display = (id === targetId) ? 'flex' : 'none';
+        });
+
+        playTone(600, 'sine', 0.05);
+      });
+    });
+
+    // Redaction Mode Switcher
+    document.getElementById('toggleRedactModeBtn').addEventListener('click', () => {
+      redactMode = (redactMode === 'blackout') ? 'tagged' : 'blackout';
+      document.getElementById('redactModeTxt').textContent = (redactMode === 'blackout') 
+        ? 'BLACKOUT BARS (███)' 
+        : 'TAGGED TOKENS ([REDACTED])';
+      if (currentScanResult) {
+        renderRedactedView(currentScanResult);
+      }
+      playTone(500, 'sine', 0.06);
+    });
+
+    // Custom Regex Studio
+    document.getElementById('applyCustomRegexBtn').addEventListener('click', () => {
+      const patternVal = document.getElementById('customRegexInput').value.trim();
+      const errEl = document.getElementById('regexErrorMsg');
+      if (!patternVal) {
+        errEl.textContent = "Please enter a valid regular expression.";
+        errEl.style.display = "block";
+        return;
+      }
+      try {
+        const regex = new RegExp(patternVal, 'g');
+        const customDet = DETECTORS_CONFIG.find(d => d.id === 'D7');
+        if (customDet) {
+          customDet.regex = regex;
+        }
+        errEl.style.display = "none";
+        triggerScanNow(true);
+        showToast("✓ Custom Regex Detector D7 updated and scanned!");
+      } catch (err) {
+        errEl.textContent = `RegEx Syntax Error: ${err.message}`;
+        errEl.style.display = "block";
+      }
+    });
+
+    // Preset Samples (Matches the 6 Faculty Test Files)
+    const PRESETS = {
+      test1: `======================================================================
+TEST CASE 01: AADHAAR GOVERNMENT IDENTIFIER LEAK (VERHOEFF CHECKSUM)
+Expected Result: Rule 'Government ID leak' Triggers -> Verdict: BLOCKED
+======================================================================
+Candidate 1 (Valid Aadhaar with Verhoeff Checksum):
+Name: Rajesh K. Verma
+Aadhaar Number: 2345 6789 0124
+Status: Validated by Verhoeff Dihedral D5 algorithm -> FLAGGED SENSITIVE
+
+Candidate 2 (Invalid Aadhaar - False Positive Candidate):
+Account Serial: 1234 5678 9012
+Status: Rejected by Verhoeff checksum -> SUPPRESSED AS FALSE POSITIVE
+
+Candidate 3 (Valid Aadhaar Format):
+Guardian Aadhaar: 9876 5432 1098
+Status: Detected and queued for redaction.
+======================================================================`,
+
+      test2: `======================================================================
+TEST CASE 02: PAYMENT CARD BREACH & LUHN INTEGRITY DEMONSTRATION
+Expected Result: Rule 'Payment data' Triggers -> Verdict: BLOCKED
+======================================================================
+TRANSACTION AUDIT DUMP:
+Terminal ID: POS-TERMINAL-HYD-04
+Merchant: Campus Cafeteria & Store
+
+Valid Visa Corporate Card:
+Card Number: 4532 0151 1283 0366
+Validation: Luhn Modulo-10 Checksum Passed -> BLOCKED!
+
+Random 16-Digit Device Serial (Should NOT be flagged):
+Hardware Serial Number: 1234 5678 9012 3456
+Validation: Luhn Checksum Failed -> False Positive Suppressed!
+
+Billing Reference: billing-gateway@campus-network.org
+======================================================================`,
+
+      test3: `======================================================================
+TEST CASE 03: TAX IDENTIFIERS (PAN) & ROOT SYSTEM CREDENTIAL LEAK
+Expected Result: 'Government ID leak' & 'Credentials' Trigger -> BLOCKED
+======================================================================
+EMPLOYEE ONBOARDING & DB INITIALIZATION DUMP:
+
+Personnel Record 1:
+Employee Name: Amit Shah
+Income Tax Permanent Account Number (PAN): ABCDE1234F
+Tax Assessment Circle: Ward 12(3), Hyderabad
+
+Personnel Record 2:
+Employee Name: Sunita Rao
+Income Tax PAN: BNKPS9821L
+
+Server Environment Configuration:
+DATABASE_HOST = db.internal.college.edu
+DB_USER = root_admin
+password: Admin@123
+passwd=SecureDev#2026!
+======================================================================`,
+
+      test4: `======================================================================
+TEST CASE 04: BULK PERSONAL DATA DIRECTORY (THRESHOLD POLICY DEMO)
+Expected Result: Rule 'Bulk personal data' Triggers at Threshold 5 -> WARN
+======================================================================
+STUDENT ADMISSION PLACEMENT DIRECTORY:
+Department of Computer Science & Engineering
+Batch 2024 - 2028
+
+1. M. Teja Reddy       | teja.reddy@institution.edu    | +91 9876543210
+2. M. Hrishikesh       | hrishikesh.m@institution.edu  | 9823019283
+3. Mohammed Aman       | aman.mohammed@institution.edu | +91 9712345678
+4. Mohammed Junade Pasha | junade.pasha@institution.edu | 9845123456
+5. Mohammed Saif Patel | saif.patel@institution.edu    | +91 9654321098
+6. M. Mahender Yadav   | mahender.y@institution.edu    | 9812345678
+7. M. Rithika Reddy    | rithika.reddy@institution.edu | +91 9988776655
+
+Notice: Individual email communications do NOT trigger a block.
+Bulk sharing exceeding threshold of 5 items elevates policy to WARNING!
+======================================================================`,
+
+      test5: `======================================================================
+TEST CASE 05: CUSTOM REGEX POLICY DEMONSTRATION (STAFF BADGES)
+Expected Result: Rule 'Custom keyword rule' Triggers on EMP-\\d{5} -> WARN
+======================================================================
+FACILITY ACCESS CONTROL LOG:
+Gate 01 - Main Academic Block
+Under Guidance: Asst Prof Mr V Shiva kumar
+
+Card Swipe Entries:
+[ENTRY 08:31] Staff Member authenticated with Badge: EMP-20481
+[ENTRY 08:45] Research Fellow scanned Badge: EMP-91024
+[ENTRY 09:12] Lab Attendant scanned Badge: EMP-55102
+[ENTRY 09:30] Guest visitor without staff badge entered lobby.
+
+Policy Engine Status:
+Detector D7 configured with Pattern: EMP-\\d{5}
+Custom Policy Rule triggers elevated caution on proprietary staff badges.
+======================================================================`,
+
+      test6: `======================================================================
+TEST CASE 06: UNCLASSIFIED CLEAN ACADEMIC ABSTRACT (ZERO SENSITIVE DATA)
+Expected Result: No detectors trigger -> Verdict: CLEAN (Risk Score: 0/100)
+======================================================================
+INFORMATION AND CYBER SECURITY LAB
+DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
+MICRO-PROJECT REPORT ABSTRACT:
+
+Title: Mini Data Loss Prevention (DLP) Content Scanner
+Supervisor: Asst Prof Mr V Shiva kumar
+
+Abstract:
+Data Loss Prevention represents a crucial pillar in modern enterprise
+confidentiality architecture. This micro-project demonstrates the
+fundamental 'detector-within-a-rule' paradigm, showcasing how pattern
+matching combined with cryptographic checksum validation (Verhoeff and Luhn)
+prevents catastrophic data exfiltration while minimizing false positives.
+
+All mathematical computations are executed locally in memory.
+No sensitive identifiers, credentials, or proprietary tokens exist
+within this abstract document.
+
+Policy Outcome: CLEAN
+Threat Risk Meter: 0 / 100
+Action Status: AUTHORIZED FOR DISTRIBUTION
+======================================================================`
+    };
+
+    function loadSamplePreset(key) {
+      textarea.value = PRESETS[key] || '';
+      triggerScanNow(true);
+      showToast(`Loaded preset sample: ${key.toUpperCase()}`);
+    }
+
+    function clearEditor() {
+      textarea.value = '';
+      triggerScanNow(true);
+      showToast("Editor cleared.");
+    }
+
+    // Drag and Drop & File Upload
+    const dropzone = document.getElementById('dropzoneOverlay');
+    const fileInput = document.getElementById('fileInput');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) handleUploadedFile(file);
+    });
+
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer.files[0];
+      if (file) handleUploadedFile(file);
+    });
+
+    function handleUploadedFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        textarea.value = e.target.result;
+        triggerScanNow(true);
+        showToast(`Loaded file: ${file.name} (${file.size} bytes)`);
+      };
+      reader.readAsText(file);
+    }
+
+    // Copy & Export Handlers
+    document.getElementById('copyRedactedBtn').addEventListener('click', () => {
+      if (!currentScanResult) return;
+      const content = (redactMode === 'blackout') ? currentScanResult.redactedBlackout : currentScanResult.redactedTagged;
+      navigator.clipboard.writeText(content).then(() => {
+        showToast("✓ Redacted document copied to clipboard!");
+      });
+    });
+
+    document.getElementById('downloadRedactedBtn').addEventListener('click', () => {
+      if (!currentScanResult) return;
+      const content = (redactMode === 'blackout') ? currentScanResult.redactedBlackout : currentScanResult.redactedTagged;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `redacted_document_${Date.now()}.txt`;
+      a.click();
+      showToast("✓ Downloaded redacted file!");
+    });
+
+    document.getElementById('copyJsonBtn').addEventListener('click', () => {
+      if (!currentScanResult) return;
+      navigator.clipboard.writeText(JSON.stringify(currentScanResult, null, 2)).then(() => {
+        showToast("✓ JSON Audit Telemetry copied to clipboard!");
+      });
+    });
+
+    // Theme Switcher (Dark Maximalist vs Light Neo-Brutalist)
+    let isDarkTheme = true;
+    document.getElementById('themeToggleBtn').addEventListener('click', () => {
+      isDarkTheme = !isDarkTheme;
+      document.body.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
+      document.getElementById('themeIcon').textContent = isDarkTheme ? '☀️' : '🌙';
+      playTone(450, 'sine', 0.08);
+      showToast(`Switched to ${isDarkTheme ? 'Dark Cyberpunk' : 'Light Neo-Brutalist'} Mode`);
+    });
+
+    // Audio Mute Toggle
+    document.getElementById('audioToggleBtn').addEventListener('click', () => {
+      audioEnabled = !audioEnabled;
+      document.getElementById('audioStateTxt').textContent = audioEnabled ? 'ON' : 'OFF';
+      document.getElementById('audioIcon').textContent = audioEnabled ? '🔊' : '🔇';
+      showToast(`Audio cues ${audioEnabled ? 'ENABLED' : 'MUTED'}`);
+      if (audioEnabled) playTone(550, 'sine', 0.1);
+    });
+
+    // CRT Scanline Toggle
+    document.getElementById('scanlineToggleBtn').addEventListener('click', () => {
+      const el = document.getElementById('scanlinesOverlay');
+      el.classList.toggle('disabled');
+      showToast("Toggled CRT scanline overlay.");
+    });
+
+    // Print Lab Viva Report
+    document.getElementById('printReportBtn').addEventListener('click', () => {
+      window.print();
+    });
+
+    // Toast Notification helper
+    function showToast(msg) {
+      const toast = document.getElementById('hudToast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.style.display = 'flex';
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3200);
+    }
+
+    // Check live Python backend API status
+    async function checkBackendStatus() {
+      const pill = document.getElementById('backendStatusPill');
+      try {
+        const res = await fetch('/api/health');
+        if (res.ok) {
+          const data = await res.json();
+          pill.innerHTML = `🟢 BACKEND: ONLINE (PORT 8000)`;
+          pill.style.borderColor = 'var(--neon-green)';
+          pill.style.color = 'var(--neon-green)';
+          showToast(`✓ Connected to Redact Python Backend Engine on http://localhost:8000`);
+        } else {
+          pill.innerHTML = `⚡ STANDALONE CLIENT ENGINE`;
+        }
+      } catch (e) {
+        pill.innerHTML = `⚡ STANDALONE CLIENT ENGINE`;
+      }
+    }
+
+    // INITIAL LAUNCH: Load Test Case 1 Preset & check backend
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSamplePreset('test1');
+      checkBackendStatus();
+    });
+  </script>
+</body>
+</html>
